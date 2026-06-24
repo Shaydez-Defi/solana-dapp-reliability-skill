@@ -1,1 +1,189 @@
 # solana-dapp-reliability-skill
+
+**Teach AI coding agents how to diagnose, prevent, and recover from the failures that make Solana dApps feel broken in production.**
+
+Most Solana resources teach how to connect wallets, send transactions, and read accounts. Very few teach why dApps fail in production — stale balances, wallet reconnect loops, websocket drops, RPC outages, confirmation confusion, optimistic UI drift.
+
+This skill fills that gap.
+
+> **This is NOT** a Solana tutorial, React guide, or web3.js reference.  
+> **This IS** a production reliability playbook organized around **failures**, not frameworks.
+
+---
+
+## What It Does
+
+- Diagnoses wallet, transaction, state sync, realtime, and RPC failures
+- Provides step-by-step playbooks for the most common production incidents
+- Audits codebases with a Reliability Score Framework
+- Guides web3.js → @solana/kit migration without big-bang rewrites
+- Calls out production anti-patterns with opinionated alternatives
+
+---
+
+## Why It Exists
+
+Builders repeatedly hit the same problems:
+
+| Symptom | Category |
+|---------|----------|
+| Stale balances after swap | State sync |
+| Wallet reconnect loops | Wallet |
+| Mobile wallet won't connect | Wallet |
+| Data frozen, no error shown | Realtime |
+| RPC 429 / outage | RPC |
+| Tx spinner never stops | Transaction |
+| UI shows success, tx failed | State sync |
+
+Developers stop at *"the feature works."* Production teams ask *"what happens when it breaks?"*
+
+---
+
+## Installation
+
+### Quick install (project-scoped)
+
+```bash
+git clone https://github.com/shaydez-defi/solana-dapp-reliability-skill.git
+cd solana-dapp-reliability-skill
+chmod +x install.sh
+./install.sh
+```
+
+### Global install (all projects)
+
+```bash
+./install.sh --global
+```
+
+### Cursor / Claude Code compatibility
+
+```bash
+./install.sh --global --cursor --claude
+```
+
+### Manual install
+
+Copy `skill/` contents to your agent skills directory:
+
+```
+~/.grok/skills/solana-dapp-reliability/SKILL.md
+```
+
+Or for project scope:
+
+```
+your-dapp/.grok/skills/solana-dapp-reliability/SKILL.md
+```
+
+---
+
+## Example Use Cases
+
+**Debug a stale balance:**
+> "User swapped USDC but balance didn't update for 2 minutes."
+
+**Audit before mainnet launch:**
+> `/reliability-audit` — score wallet, tx, state, realtime, RPC, and recovery.
+
+**Fix websocket silence:**
+> "Realtime prices stopped updating but no error in the UI."
+
+**Plan a Kit migration:**
+> `/migrate-to-kit` — phased migration from web3.js without breaking production.
+
+---
+
+## Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/reliability-audit` | Full codebase reliability review with scores |
+| `/tx-flow-audit` | End-to-end transaction pipeline inspection |
+| `/frontend-health-check` | Architecture strengths, weaknesses, concerns |
+| `/migrate-to-kit` | web3.js → @solana/kit migration analysis |
+
+---
+
+## Reliability Score Example
+
+```
+Wallet Reliability:       84/100
+Transaction Reliability:  72/100
+State Consistency:        58/100
+Realtime Reliability:     67/100
+RPC Reliability:          91/100
+Failure Recovery:         42/100
+─────────────────────────────────
+Overall Reliability:      69/100
+```
+
+---
+
+## Repository Structure
+
+```
+solana-dapp-reliability-skill/
+├── README.md
+├── LICENSE
+├── install.sh
+├── skill/
+│   ├── SKILL.md                    # Router — loads only relevant modules
+│   ├── reliability/
+│   │   ├── wallet-failures.md
+│   │   ├── transaction-failures.md
+│   │   ├── state-sync-failures.md
+│   │   ├── realtime-failures.md
+│   │   └── rpc-failures.md
+│   ├── playbooks/
+│   │   ├── stale-balances.md
+│   │   ├── tx-stuck.md
+│   │   ├── websocket-failure.md
+│   │   ├── wallet-reconnect.md
+│   │   └── rpc-outage.md
+│   ├── migration/
+│   │   └── kit-migration.md
+│   ├── anti-patterns/
+│   │   └── production-anti-patterns.md
+│   └── audits/
+│       └── reliability-checklist.md
+├── commands/
+│   ├── reliability-audit.md
+│   ├── tx-flow-audit.md
+│   ├── frontend-health-check.md
+│   └── migrate-to-kit.md
+└── rules/
+    └── reliability-rules.md
+```
+
+---
+
+## Philosophy
+
+- Organized around **failures**, not technologies
+- **Progressive loading** — SKILL.md routes to one module at a time
+- **Opinionated** — calls out anti-patterns directly
+- **Practical** — based on real production failure modes
+- **Smallest complete version** — depth over encyclopedia breadth
+
+---
+
+## Contributing
+
+Contributions welcome. Focus areas:
+
+- New failure modes with Problem → Symptoms → Diagnosis → Fix → Prevention structure
+- Additional playbooks for common incidents
+- Mainnet-tested patterns (not devnet-only assumptions)
+
+Open a PR with a clear description of the failure scenario and production evidence.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+---
+
+Built by [Shaydez-Defi](https://github.com/shaydez-defi) for Solana builders who ship to production, not just devnet.
