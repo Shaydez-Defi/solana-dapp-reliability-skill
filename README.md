@@ -187,3 +187,23 @@ MIT — see [LICENSE](LICENSE).
 ---
 
 Built by [Shaydez-Defi](https://github.com/shaydez-defi) for Solana builders who ship to production, not just devnet.
+
+---
+
+## Hackathon / Solana AI Kit
+
+Submitted for [Superteam Brasil — Ship useful agent skills for Solana AI Kit](https://superteam.fun/earn/listing/skills/).
+
+| Resource | Description |
+|----------|-------------|
+| [SUBMISSION.md](SUBMISSION.md) | Full hackathon submission pitch |
+| [examples/demo-audit.md](examples/demo-audit.md) | Live audit of Solana Foundation counter template |
+| [examples/demo-prompts.md](examples/demo-prompts.md) | Copy-paste prompts to demo the skill |
+| [docs/AI-KIT-INTEGRATION.md](docs/AI-KIT-INTEGRATION.md) | How to add as AI Kit `ext/` submodule |
+
+### Validate structure
+
+```bash
+chmod +x validate.sh
+./validate.sh
+```
