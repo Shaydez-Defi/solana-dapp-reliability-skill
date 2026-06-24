@@ -4,7 +4,7 @@
 
 **Trigger:** `/reliability-audit` or "Is this dApp ready for mainnet users?"
 
-**Framework applied:** The DApp Reliability Framework (5 layers) + Production Readiness Checklist (10 items)
+**Framework applied:** The DApp Reliability Framework (5 layers) + Reliability Score + Production Readiness Checklist (10 items)
 
 **Why this target:** Official Solana starter template — widely forked by hackathon teams. Auditing it shows how the framework catches gaps that pass devnet QA but fail in production.
 
@@ -12,17 +12,26 @@
 
 ## Mainnet Readiness: web3js-react-vite-tailwind-counter
 
-**Checklist:** 2/10 passed  
-**Overall:** 55/100  
-**Verdict:** Not ready — fragile for mainnet users at scale. OK for devnet/hackathon prototype only.
+```
+Wallet Reliability:          62
+Transaction Reliability:     58
+State Reliability:           71
+Realtime Reliability:        35
+Infrastructure Reliability:  48
+────────────────────────────────
+Overall Score:               55
 
-| Layer | Score | Top Issue |
-|-------|-------|-----------|
-| 1 — Wallet Reliability | 62/100 | Empty `wallets={[]}` — no adapters registered |
-| 2 — Transaction Reliability | 58/100 | No simulation; errors swallowed silently |
-| 3 — State Reliability | 71/100 | Refetch-on-success only; no reconciliation |
-| 4 — Realtime Reliability | 35/100 | Zero websocket subscriptions |
-| 5 — Infrastructure Reliability | 48/100 | Single public RPC; no failover |
+Checklist: 2/10 passed
+Verdict: Not mainnet-ready — OK for devnet/hackathon prototype only.
+```
+
+| Layer | Top Issue |
+|-------|-----------|
+| 1 — Wallet | Empty `wallets={[]}` — no adapters registered |
+| 2 — Transaction | No simulation; errors swallowed silently |
+| 3 — State | Refetch-on-success only; no reconciliation |
+| 4 — Realtime | Zero websocket subscriptions |
+| 5 — Infrastructure | Single public RPC; no failover |
 
 ### Checklist Results
 
@@ -158,6 +167,6 @@ Score all five reliability layers and run the production readiness checklist.
 ```
 
 **Skill modules loaded:**
-`reliability-framework.md` → `production-readiness-checklist.md` → `reliability/wallet-failures.md` → `reliability/transaction-failures.md`
+`reliability-framework.md` → `production-readiness-checklist.md` → `reliability-score.md`
 
-**Progressive loading verified:** Framework + checklist + 2 layer modules — not the full skill dump.
+**Progressive loading verified:** Framework + checklist + score rubric — 3 files, not the full skill dump.

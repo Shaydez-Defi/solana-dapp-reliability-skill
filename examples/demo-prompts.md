@@ -13,7 +13,7 @@ Is my dApp ready for mainnet users?
 Score all five reliability layers and run the production readiness checklist.
 ```
 
-**Expected:** Agent loads `reliability-framework.md` → `production-readiness-checklist.md`
+**Expected:** Agent loads `reliability-framework.md` → `production-readiness-checklist.md` → `reliability-score.md` — outputs 5 layer scores + overall
 
 ## Debug stale balance
 
@@ -58,20 +58,34 @@ Live prices stopped updating 10 minutes ago. No error in the UI.
 
 **Expected:** Agent loads `playbooks/websocket-failure.md` + `reliability/realtime-failures.md`
 
-## Kit migration
-
-```
-We use web3.js with wallet-adapter across 40 files.
-What's the safest phased migration to @solana/kit without breaking production?
-```
-
-**Expected:** Agent loads `migration/kit-migration.md`
-
 ## Transaction flow review
 
 ```
+/tx-flow-audit
+
 Trace our swap flow from button click to UI update.
 Find every place it can fail silently.
 ```
 
 **Expected:** Agent loads `reliability-framework.md` (Layer 2) → `playbooks/tx-stuck.md` → `reliability/transaction-failures.md`
+
+## Frontend health check
+
+```
+/frontend-health-check
+
+Review our dApp architecture for production survivability.
+```
+
+**Expected:** Agent loads `reliability-framework.md` → `production-readiness-checklist.md` → `reliability-score.md`
+
+## Kit migration
+
+```
+/migrate-to-kit
+
+We use web3.js with wallet-adapter across 40 files.
+What's the safest phased migration to @solana/kit?
+```
+
+**Expected:** Agent loads `migration/kit-migration.md`

@@ -32,19 +32,9 @@ Every issue maps to exactly one layer.
 
 ### Audit / production readiness
 1. **Read** `production-readiness-checklist.md`
-2. Scan codebase against checklist
-3. Score each layer 0–100 (brief rubric below)
-4. Return: layer scores, checklist pass count, verdict, top 3 fixes
-
-### Layer scoring (0–100)
-Start at 100, deduct for missing items from `production-readiness-checklist.md` in that layer. Be honest — devnet-only = low score.
-
-| Score | Verdict |
-|-------|---------|
-| 85+ | Production-ready |
-| 70–84 | Soft launch OK |
-| 50–69 | Fragile |
-| <50 | Not mainnet-ready |
+2. **Read** `reliability-score.md` — scoring rubric + required output format
+3. Scan codebase against checklist
+4. Return: 5 layer scores, overall score, checklist X/10, verdict, top 3 fixes
 
 ---
 

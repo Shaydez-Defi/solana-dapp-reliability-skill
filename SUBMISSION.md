@@ -43,7 +43,8 @@ This skill fills a gap the kit's `solana-dev` skill doesn't cover: **how things 
 
 **Playbooks** (`playbooks/`) are first-class — step-by-step recovery for the five most common production incidents.  
 **Failure modules** (`reliability/`) provide deep diagnosis with Severity / Frequency / User Impact.  
-**Production Readiness Checklist** — 10-item founder-friendly mainnet gate.
+**Production Readiness Checklist** — 10-item founder-friendly mainnet gate.  
+**Reliability Score** — weighted 0–100 output artifact every audit produces.
 
 ---
 
@@ -66,6 +67,7 @@ This skill fills a gap the kit's `solana-dev` skill doesn't cover: **how things 
 | `skill/SKILL.md` router | ✅ Progressive loading — max 2–3 files per turn |
 | `reliability-framework.md` at skill root | ✅ Load first for audits |
 | `production-readiness-checklist.md` | ✅ 10-item mainnet gate |
+| `reliability-score.md` | ✅ Weighted scoring rubric + output format |
 | `install.sh` | ✅ Project, global, Cursor, Claude scopes |
 | `validate.sh` | ✅ Structure integrity + scope trim checks |
 | `ext/` submodule install | ✅ See `docs/AI-KIT-INTEGRATION.md` |
@@ -80,7 +82,7 @@ Audited the official Solana Foundation counter template. Found:
 - Empty wallet adapter list (critical)
 - Silent transaction error swallowing (critical)
 - No simulation, no failover RPC, no realtime subscriptions
-- Checklist: **2/10 passed** — not production-ready
+- Overall score: **55/100** — checklist **2/10** — not production-ready
 
 This is exactly what hackathon teams fork and ship broken.
 
@@ -100,9 +102,10 @@ chmod +x install.sh validate.sh
 
 ```
 /reliability-audit
+/tx-flow-audit
+/frontend-health-check
+/migrate-to-kit
 My user's balance didn't update after a swap — help me debug.
-Is my dApp ready for mainnet users?
-Transaction spinner stuck for 5 minutes — diagnose and recover.
 Wallet connected but user cannot sign.
 ```
 
@@ -110,7 +113,7 @@ Wallet connected but user cannot sign.
 
 ## Repository Stats
 
-- **14 knowledge files** — framework, checklist, 5 failure modules, 5 playbooks, migration, anti-patterns
+- **15 knowledge files** — framework, score, checklist, 5 failure modules, 5 playbooks, migration, anti-patterns
 - **5 battle-tested playbooks** with Symptoms → Causes → Verification → Fixes → Prevention
 - **10-item production readiness checklist**
 - **MIT licensed** — ready for AI Kit `ext/` submodule

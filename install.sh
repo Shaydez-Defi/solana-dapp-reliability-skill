@@ -44,6 +44,7 @@ install_skill() {
   cp "${REPO_DIR}/skill/SKILL.md" "${target_dir}/SKILL.md"
   cp "${REPO_DIR}/skill/reliability-framework.md" "${target_dir}/reliability-framework.md"
   cp "${REPO_DIR}/skill/production-readiness-checklist.md" "${target_dir}/production-readiness-checklist.md"
+  cp "${REPO_DIR}/skill/reliability-score.md" "${target_dir}/reliability-score.md"
 
   for subdir in reliability playbooks migration anti-patterns; do
     if [[ -d "${REPO_DIR}/skill/${subdir}" ]]; then
@@ -66,5 +67,7 @@ fi
 
 echo ""
 echo "Solana dApp Reliability skill installed."
-echo "  /reliability-audit  — production readiness review"
-echo "  Playbooks load first for: stale balance, stuck tx, can't sign, websocket, RPC outage"
+echo "  /reliability-audit       — 5-layer score + checklist"
+echo "  /tx-flow-audit           — trace tx pipeline silent failures"
+echo "  /frontend-health-check   — architecture survivability review"
+echo "  /migrate-to-kit          — phased web3.js → @solana/kit"

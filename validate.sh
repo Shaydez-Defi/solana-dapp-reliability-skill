@@ -31,7 +31,7 @@ done
 echo ""
 
 echo "[Framework — load first]"
-for f in SKILL.md reliability-framework.md production-readiness-checklist.md; do
+for f in SKILL.md reliability-framework.md production-readiness-checklist.md reliability-score.md; do
   file_exists "${SKILL_ROOT}/${f}" && check "skill/${f}" 0 || check "skill/${f}" 1
 done
 echo ""

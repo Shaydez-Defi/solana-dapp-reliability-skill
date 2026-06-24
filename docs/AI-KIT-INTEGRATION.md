@@ -33,7 +33,7 @@ Add to `.claude/skills/skill-registry.json`:
   "name": "Solana dApp Reliability",
   "type": "skill",
   "domain": "solana-frontend",
-  "description": "Diagnose and recover from production failures in Solana dApps. Five-layer framework, battle-tested playbooks, 10-item mainnet checklist. Does NOT teach how to build — complements solana-dev.",
+  "description": "Diagnose and recover from production failures in Solana dApps. Five-layer framework, reliability score output, playbooks, 10-item checklist. Commands: /reliability-audit, /tx-flow-audit, /frontend-health-check, /migrate-to-kit.",
   "source": "https://github.com/Shaydez-Defi/solana-dapp-reliability-skill",
   "install": {
     "method": "submodule",
@@ -84,13 +84,15 @@ The reliability skill's own router then loads only the relevant file — playboo
 
 | User intent | Files loaded |
 |-------------|--------------|
-| Audit / production readiness / architecture review | `reliability-framework.md` → `production-readiness-checklist.md` |
+| `/reliability-audit` | `reliability-framework.md` → `production-readiness-checklist.md` → `reliability-score.md` |
+| `/frontend-health-check` | `reliability-framework.md` → `production-readiness-checklist.md` → `reliability-score.md` |
+| `/tx-flow-audit` | `reliability-framework.md` (Layer 2) → `playbooks/tx-stuck.md` → `reliability/transaction-failures.md` |
+| `/migrate-to-kit` | `migration/kit-migration.md` |
 | Stale balance | `playbooks/stale-balances.md` |
 | Stuck transaction | `playbooks/tx-stuck.md` |
 | Wallet can't sign | `playbooks/wallet-cannot-sign.md` |
 | Websocket silence | `playbooks/websocket-failure.md` |
 | RPC outage / 429 | `playbooks/rpc-outage.md` |
-| Kit migration | `migration/kit-migration.md` |
 
 Progressive loading rule: max 2 files per debug turn, max 3 for audits.
 

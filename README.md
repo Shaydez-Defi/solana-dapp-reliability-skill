@@ -22,6 +22,7 @@ The official Solana dev skill teaches how to build. **This skill teaches how to 
 ## What It Does
 
 - **5-layer Reliability Framework** — classify any production issue
+- **Reliability Score** — weighted 0–100 output judges can point at
 - **5 battle-tested playbooks** — stale balance, stuck tx, can't sign, websocket, RPC outage
 - **Production Readiness Checklist** — 10-item founder-friendly mainnet gate
 - Failure modules for deep diagnosis (wallet, tx, state, realtime, infrastructure)
@@ -91,13 +92,49 @@ your-dapp/.grok/skills/solana-dapp-reliability/SKILL.md
 > "User swapped USDC but balance didn't update for 2 minutes." → `playbooks/stale-balances.md`
 
 **Audit before mainnet launch:**
-> `/reliability-audit` — five-layer scores + 10-item production readiness checklist.
+> `/reliability-audit` — five-layer scores + overall score + 10-item checklist.
+
+**Trace silent tx failures:**
+> `/tx-flow-audit` — button click → confirm → UI update.
+
+**Architecture survivability review:**
+> `/frontend-health-check` — strengths, weaknesses, layer scores.
 
 **Fix websocket silence:**
 > "Realtime prices stopped updating but no error in the UI." → `playbooks/websocket-failure.md`
 
 **Plan a Kit migration:**
-> "Safest phased web3.js → @solana/kit migration" → `migration/kit-migration.md`
+> `/migrate-to-kit` — phased web3.js → @solana/kit without breaking production.
+
+---
+
+## Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/reliability-audit` | 5-layer score + checklist + verdict |
+| `/tx-flow-audit` | Trace tx pipeline for silent failures |
+| `/frontend-health-check` | Architecture survivability review |
+| `/migrate-to-kit` | Phased web3.js → @solana/kit migration |
+
+---
+
+## Reliability Score Example
+
+See `skill/reliability-score.md` for scoring rubric.
+
+```
+Wallet Reliability:          62
+Transaction Reliability:     58
+State Reliability:           71
+Realtime Reliability:        35
+Infrastructure Reliability:  48
+────────────────────────────────
+Overall Score:               55
+
+Checklist: 2/10 passed
+Verdict: Not mainnet-ready
+```
 
 ---
 
@@ -136,6 +173,7 @@ solana-dapp-reliability-skill/
     ├── SKILL.md
     ├── reliability-framework.md          # Load first for audits
     ├── production-readiness-checklist.md # 10-item mainnet gate
+    ├── reliability-score.md              # Scoring rubric + output format
     ├── reliability/
     │   ├── wallet-failures.md
     │   ├── transaction-failures.md
