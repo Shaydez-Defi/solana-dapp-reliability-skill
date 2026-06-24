@@ -73,27 +73,36 @@ If the user cannot clarify, start with the most likely module, state your assump
 
 ## Router — Modules
 
-| User intent | Read this file |
-|-------------|----------------|
-| Wallet adapters, Phantom, Backpack, WalletConnect, reconnect loops, mobile wallets | `reliability/wallet-failures.md` |
-| Expired blockhash, simulation failure, tx stuck, confirmation, priority fees, compute budget | `reliability/transaction-failures.md` |
-| Stale balances, UI not updating, optimistic updates, cache drift, race conditions | `reliability/state-sync-failures.md` |
-| Websocket disconnects, subscriptions, dropped/duplicate events, realtime updates | `reliability/realtime-failures.md` |
-| RPC rate limits, provider outages, retries, failover, health monitoring | `reliability/rpc-failures.md` |
-| web3.js → @solana/kit migration, legacy patterns | `migration/kit-migration.md` |
-| What not to do in production | `anti-patterns/production-anti-patterns.md` |
+- **Wallet** — adapters, Phantom, Backpack, WalletConnect, reconnect loops, mobile  
+  → `reliability/wallet-failures.md`
+
+- **Transaction** — expired blockhash, simulation failure, tx stuck, confirmation, priority fees, compute budget  
+  → `reliability/transaction-failures.md`
+
+- **State sync** — stale balances, UI not updating, optimistic updates, cache drift, race conditions  
+  → `reliability/state-sync-failures.md`
+
+- **Realtime** — websocket disconnects, subscriptions, dropped/duplicate events  
+  → `reliability/realtime-failures.md`
+
+- **RPC** — rate limits, provider outages, retries, failover, health monitoring  
+  → `reliability/rpc-failures.md`
+
+- **Kit migration** — web3.js → @solana/kit, legacy patterns  
+  → `migration/kit-migration.md`
+
+- **Anti-patterns** — what not to do in production  
+  → `anti-patterns/production-anti-patterns.md`
 
 ---
 
 ## Router — Playbooks (symptom → steps)
 
-| Symptom | Read this playbook |
-|---------|-------------------|
-| Balance doesn't update after tx | `playbooks/stale-balances.md` |
-| Transaction appears frozen | `playbooks/tx-stuck.md` |
-| Realtime data stops updating silently | `playbooks/websocket-failure.md` |
-| Wallet reconnect loop or session loss | `playbooks/wallet-reconnect.md` |
-| RPC degraded or down | `playbooks/rpc-outage.md` |
+- Balance doesn't update after tx → `playbooks/stale-balances.md`
+- Transaction appears frozen → `playbooks/tx-stuck.md`
+- Realtime data stops updating silently → `playbooks/websocket-failure.md`
+- Wallet reconnect loop or session loss → `playbooks/wallet-reconnect.md`
+- RPC degraded or down → `playbooks/rpc-outage.md`
 
 When a user reports a **specific symptom**, prefer the playbook first, then Read the linked module from the playbook's "Related Modules" section if deeper context is needed.
 
@@ -101,12 +110,10 @@ When a user reports a **specific symptom**, prefer the playbook first, then Read
 
 ## Router — Commands (audits)
 
-| Slash command | Read these files (in order) |
-|---------------|----------------------------|
-| `/reliability-audit` | `commands/reliability-audit.md` → `audits/reliability-checklist.md` |
-| `/tx-flow-audit` | `commands/tx-flow-audit.md` → `reliability/transaction-failures.md` |
-| `/frontend-health-check` | `commands/frontend-health-check.md` |
-| `/migrate-to-kit` | `commands/migrate-to-kit.md` → `migration/kit-migration.md` |
+- `/reliability-audit` → `commands/reliability-audit.md` then `audits/reliability-checklist.md`
+- `/tx-flow-audit` → `commands/tx-flow-audit.md` then `reliability/transaction-failures.md`
+- `/frontend-health-check` → `commands/frontend-health-check.md`
+- `/migrate-to-kit` → `commands/migrate-to-kit.md` then `migration/kit-migration.md`
 
 ---
 
