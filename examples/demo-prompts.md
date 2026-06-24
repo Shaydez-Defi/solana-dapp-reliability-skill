@@ -20,7 +20,7 @@ User completed a swap but their USDC balance didn't update for 2 minutes.
 What should I check and how do I fix it?
 ```
 
-**Expected:** Agent loads `skill/reliability/state-sync-failures.md` + `skill/playbooks/stale-balances.md`
+**Expected:** Agent loads `reliability/state-sync-failures.md` + `playbooks/stale-balances.md`
 
 ## Debug stuck transaction
 
@@ -29,7 +29,7 @@ Transaction spinner has been running for 5 minutes. User thinks the app is broke
 How do I diagnose and recover?
 ```
 
-**Expected:** Agent loads `skill/playbooks/tx-stuck.md` + `skill/reliability/transaction-failures.md`
+**Expected:** Agent loads `playbooks/tx-stuck.md` + `reliability/transaction-failures.md`
 
 ## Wallet reconnect loop
 
@@ -37,7 +37,7 @@ How do I diagnose and recover?
 Phantom connects then immediately disconnects in a loop. Only happens on mobile Safari.
 ```
 
-**Expected:** Agent loads `skill/reliability/wallet-failures.md` + `skill/playbooks/wallet-reconnect.md`
+**Expected:** Agent loads `reliability/wallet-failures.md` + `playbooks/wallet-reconnect.md`
 
 ## RPC outage
 
@@ -46,7 +46,7 @@ All RPC calls returning 429. App is completely down for users.
 What's the immediate fallback procedure?
 ```
 
-**Expected:** Agent loads `skill/playbooks/rpc-outage.md` + `skill/reliability/rpc-failures.md`
+**Expected:** Agent loads `playbooks/rpc-outage.md` + `reliability/rpc-failures.md`
 
 ## Kit migration
 
@@ -57,7 +57,7 @@ We use web3.js with wallet-adapter across 40 files.
 What's the safest phased migration to @solana/kit?
 ```
 
-**Expected:** Agent loads `commands/migrate-to-kit.md` + `skill/migration/kit-migration.md`
+**Expected:** Agent loads `commands/migrate-to-kit.md` + `migration/kit-migration.md`
 
 ## Transaction flow review
 

@@ -10,7 +10,7 @@ User asks about migrating to @solana/kit, modernizing Solana client code, or rep
 
 ## Steps
 
-1. Read `skill/migration/kit-migration.md`.
+1. **Read** `migration/kit-migration.md`.
 2. Scan codebase for web3.js usage:
    - `import { Connection, PublicKey, Transaction } from '@solana/web3.js'`
    - `connection.get*`, `connection.send*`, `connection.on*`

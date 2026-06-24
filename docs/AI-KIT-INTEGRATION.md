@@ -16,7 +16,7 @@ git submodule add https://github.com/Shaydez-Defi/solana-dapp-reliability-skill.
 The skill router lives at:
 
 ```
-.claude/skills/ext/solana-dapp-reliability/skill/SKILL.md
+.claude/skills/ext/solana-dapp-reliability/SKILL.md
 ```
 
 Wire it into the kit's skill hub by adding a reference in `.claude/skills/SKILL.md` or the kit's skill registry.

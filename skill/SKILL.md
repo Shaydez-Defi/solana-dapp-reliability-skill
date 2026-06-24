@@ -23,47 +23,115 @@ Developers stop at "the feature works." Production teams ask: **"What happens wh
 
 Organize your thinking around **failures**, not frameworks. Always consider failure paths, fallbacks, and recovery before recommending shortcuts.
 
-## Router — Load Only What You Need
+---
 
-**Never load all knowledge at once.** Read `rules/reliability-rules.md` first, then load exactly one module (or playbook/command) relevant to the user's question.
+## Path Resolution (read this first)
 
-| User intent | Load this file |
+All paths below are **relative to the directory containing this SKILL.md file** (the skill root).
+
+| Context | Skill root location |
+|---------|---------------------|
+| After `./install.sh` | `~/.grok/skills/solana-dapp-reliability/` or `.grok/skills/solana-dapp-reliability/` |
+| From this repo | `<repo>/skill/` |
+
+**Loading rule:** Use the **Read** tool to load every referenced file. Never guess or paraphrase module content from memory. If Read fails, tell the user the path you tried and ask them to confirm the skill is installed.
+
+**Example:** `reliability/wallet-failures.md` → Read `<skill-root>/reliability/wallet-failures.md`
+
+---
+
+## Startup Sequence
+
+On every invocation:
+
+1. **Read** `rules/reliability-rules.md` (agent behavior rules).
+2. Classify the user's request into one failure category (or match a slash command).
+3. **Read** only the module, playbook, or command file(s) listed for that category.
+4. Respond using the loaded content — cite the module's Problem → Diagnosis → Fix structure.
+
+**Hard limits:**
+- Do **not** read all modules in one turn.
+- Maximum **2 knowledge files** for a debug question (1 module + 1 playbook).
+- Maximum **3 knowledge files** for an audit command (command + checklist + 1 module as needed).
+
+---
+
+## When Intent Is Unclear
+
+If the question could map to multiple categories, ask **one** clarifying question before loading:
+
+| Ambiguous report | Ask |
+|------------------|-----|
+| "App is broken" | "Is it wallet connect, a stuck transaction, stale data, or everything failing to load?" |
+| "Balance is wrong" | "Is the balance wrong on-chain (explorer) too, or only in your UI?" |
+| "Nothing updates" | "Did a transaction complete, or is live data frozen with no recent tx?" |
+| "Transaction failed" | "Did the user reject in wallet, or did they sign and it failed/dropped on-chain?" |
+
+If the user cannot clarify, start with the most likely module, state your assumption, and offer to pivot.
+
+---
+
+## Router — Modules
+
+| User intent | Read this file |
 |-------------|----------------|
-| Wallet adapters, Phantom, Backpack, WalletConnect, reconnect loops, mobile wallets | `skill/reliability/wallet-failures.md` |
-| Expired blockhash, simulation failure, tx stuck, confirmation, priority fees, compute budget | `skill/reliability/transaction-failures.md` |
-| Stale balances, UI not updating, optimistic updates, cache drift, race conditions | `skill/reliability/state-sync-failures.md` |
-| Websocket disconnects, subscriptions, dropped/duplicate events, realtime updates | `skill/reliability/realtime-failures.md` |
-| RPC rate limits, provider outages, retries, failover, health monitoring | `skill/reliability/rpc-failures.md` |
-| web3.js → @solana/kit migration, legacy patterns | `skill/migration/kit-migration.md` |
-| What not to do in production | `skill/anti-patterns/production-anti-patterns.md` |
+| Wallet adapters, Phantom, Backpack, WalletConnect, reconnect loops, mobile wallets | `reliability/wallet-failures.md` |
+| Expired blockhash, simulation failure, tx stuck, confirmation, priority fees, compute budget | `reliability/transaction-failures.md` |
+| Stale balances, UI not updating, optimistic updates, cache drift, race conditions | `reliability/state-sync-failures.md` |
+| Websocket disconnects, subscriptions, dropped/duplicate events, realtime updates | `reliability/realtime-failures.md` |
+| RPC rate limits, provider outages, retries, failover, health monitoring | `reliability/rpc-failures.md` |
+| web3.js → @solana/kit migration, legacy patterns | `migration/kit-migration.md` |
+| What not to do in production | `anti-patterns/production-anti-patterns.md` |
 
-### Playbooks (step-by-step troubleshooting)
+---
 
-| Symptom | Load this playbook |
+## Router — Playbooks (symptom → steps)
+
+| Symptom | Read this playbook |
 |---------|-------------------|
-| Balance doesn't update after tx | `skill/playbooks/stale-balances.md` |
-| Transaction appears frozen | `skill/playbooks/tx-stuck.md` |
-| Realtime data stops updating silently | `skill/playbooks/websocket-failure.md` |
-| Wallet reconnect loop or session loss | `skill/playbooks/wallet-reconnect.md` |
-| RPC degraded or down | `skill/playbooks/rpc-outage.md` |
+| Balance doesn't update after tx | `playbooks/stale-balances.md` |
+| Transaction appears frozen | `playbooks/tx-stuck.md` |
+| Realtime data stops updating silently | `playbooks/websocket-failure.md` |
+| Wallet reconnect loop or session loss | `playbooks/wallet-reconnect.md` |
+| RPC degraded or down | `playbooks/rpc-outage.md` |
 
-### Commands (audit workflows)
+When a user reports a **specific symptom**, prefer the playbook first, then Read the linked module from the playbook's "Related Modules" section if deeper context is needed.
 
-| Slash command | Load this file |
-|---------------|----------------|
-| `/reliability-audit` | `commands/reliability-audit.md` + `skill/audits/reliability-checklist.md` |
-| `/tx-flow-audit` | `commands/tx-flow-audit.md` |
+---
+
+## Router — Commands (audits)
+
+| Slash command | Read these files (in order) |
+|---------------|----------------------------|
+| `/reliability-audit` | `commands/reliability-audit.md` → `audits/reliability-checklist.md` |
+| `/tx-flow-audit` | `commands/tx-flow-audit.md` → `reliability/transaction-failures.md` |
 | `/frontend-health-check` | `commands/frontend-health-check.md` |
-| `/migrate-to-kit` | `commands/migrate-to-kit.md` + `skill/migration/kit-migration.md` |
+| `/migrate-to-kit` | `commands/migrate-to-kit.md` → `migration/kit-migration.md` |
+
+---
 
 ## Response Pattern
 
 When diagnosing or auditing:
 
 1. **Identify the failure category** (wallet, transaction, state, realtime, RPC).
-2. **Load the matching module or playbook** — do not guess from memory alone.
-3. **Follow the module structure**: Problem → Symptoms → Causes → Diagnosis → Fix → Prevention.
+2. **Read** the matching module or playbook — do not rely on general Solana knowledge alone.
+3. **Follow the module structure:** Problem → Symptoms → Causes → Diagnosis → Fix → Prevention.
 4. **State tradeoffs** — devnet success ≠ production readiness.
 5. **Recommend fallbacks** — never propose a single point of failure without an alternative.
 
-For audit commands, score each category using the Reliability Score Framework in `skill/audits/reliability-checklist.md` and return actionable recommendations ranked by user impact.
+For audit commands, score each category using the framework in `audits/reliability-checklist.md` and return recommendations ranked by **user impact**.
+
+---
+
+## Quick Category Cheatsheet
+
+```
+Wallet won't connect / reconnect loop     → reliability/wallet-failures.md
+Tx stuck / expired / simulation fail      → reliability/transaction-failures.md + playbooks/tx-stuck.md
+Balance stale / optimistic UI wrong       → reliability/state-sync-failures.md + playbooks/stale-balances.md
+Live data frozen / websocket dead         → reliability/realtime-failures.md + playbooks/websocket-failure.md
+429 / RPC down / slow reads               → reliability/rpc-failures.md + playbooks/rpc-outage.md
+Pre-mainnet review                        → commands/reliability-audit.md
+web3.js → Kit                             → commands/migrate-to-kit.md
+```

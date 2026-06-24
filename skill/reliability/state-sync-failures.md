@@ -31,7 +31,7 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ### Prevention
 - Reconciliation loop: every 10–30s, diff UI vs RPC for active wallet.
-- See `skill/playbooks/stale-balances.md`.
+- See `playbooks/stale-balances.md`.
 
 ---
 
@@ -175,5 +175,5 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ### Prevention
 - Centralized subscription registry with reference counting.
-- See `skill/reliability/realtime-failures.md` for transport details.
+- See `reliability/realtime-failures.md` for transport details.
 - Reconcile from RPC after reconnect before trusting stream.

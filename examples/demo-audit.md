@@ -36,7 +36,7 @@ No wallet adapters are registered. `autoConnect` runs against an empty list. Use
 
 **Fix:** Register `PhantomWalletAdapter`, `SolflareWalletAdapter`, etc. Test connect on desktop and mobile.
 
-**Playbook:** `skill/playbooks/wallet-reconnect.md`
+**Playbook:** `playbooks/wallet-reconnect.md`
 
 ---
 
@@ -55,7 +55,7 @@ Failures are logged to console and return `undefined`. `onSuccess` still runs an
 
 **Fix:** Re-throw or use `onError`. Distinguish user rejection from network failure. Never invalidate state on failed sends.
 
-**Module:** `skill/reliability/transaction-failures.md`
+**Module:** `reliability/transaction-failures.md`
 
 ---
 
@@ -83,7 +83,7 @@ Default is public devnet RPC. README notes mainnet public endpoint has CORS rest
 
 **Fix:** Primary + secondary RPC with health-aware routing. Never ship public `api.mainnet-beta.solana.com` to production.
 
-**Playbook:** `skill/playbooks/rpc-outage.md`
+**Playbook:** `playbooks/rpc-outage.md`
 
 ---
 
@@ -95,7 +95,7 @@ After a tx, UI waits for `refetch()` — users see stale counter values until re
 
 **Fix:** Subscribe to counter account via websocket. Add periodic RPC reconciliation. Show "updating…" during lag.
 
-**Module:** `skill/reliability/realtime-failures.md`
+**Module:** `reliability/realtime-failures.md`
 
 ---
 
@@ -160,6 +160,6 @@ Review this Solana counter dApp template for production reliability.
 Focus on wallet setup, transaction flow, state sync, and RPC config.
 ```
 
-**Skill modules loaded:** `rules/reliability-rules.md` → `commands/reliability-audit.md` → `skill/audits/reliability-checklist.md` → `skill/reliability/wallet-failures.md` → `skill/reliability/transaction-failures.md` → `skill/reliability/state-sync-failures.md`
+**Skill modules loaded:** `rules/reliability-rules.md` → `commands/reliability-audit.md` → `audits/reliability-checklist.md` → `reliability/wallet-failures.md` → `reliability/transaction-failures.md` → `reliability/state-sync-failures.md`
 
 **Progressive loading verified:** Agent did not load all 21 files — only router + audit command + relevant modules.

@@ -161,4 +161,4 @@ Mixed confirmation strategies: some code uses `confirmed`, some `finalized`; pol
 - Standard: UI success at `confirmed`; high-value settlements at `finalized`.
 - Single tx status service used by all components.
 - Timeout → show "still confirming" with link to explorer, not false failure.
-- See `skill/playbooks/tx-stuck.md` for full workflow.
+- See `playbooks/tx-stuck.md` for full workflow.

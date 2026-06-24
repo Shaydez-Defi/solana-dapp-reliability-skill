@@ -10,8 +10,8 @@ User asks about transaction reliability, confirmation issues, or wants tx pipeli
 
 ## Steps
 
-1. Read `skill/reliability/transaction-failures.md`.
-2. Read `skill/playbooks/tx-stuck.md`.
+1. **Read** `reliability/transaction-failures.md`.
+2. **Read** `playbooks/tx-stuck.md`.
 3. Trace the full tx flow in codebase:
 
    ```

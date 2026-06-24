@@ -66,5 +66,5 @@
 
 ## Related Modules
 
-- `skill/reliability/transaction-failures.md`
-- `skill/reliability/rpc-failures.md` (if RPC can't return status)
+- `reliability/transaction-failures.md`
+- `reliability/rpc-failures.md` (if RPC can't return status)

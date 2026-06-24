@@ -47,8 +47,8 @@ This skill fills a gap the kit's `solana-dev` and `sendai` skills don't cover: *
 | AI Kit pattern | This repo |
 |----------------|-----------|
 | `skill/SKILL.md` router | ✅ Progressive loading — never dumps all knowledge |
-| `commands/` | ✅ 4 audit commands |
-| `rules/` | ✅ `reliability-rules.md` |
+| `skill/commands/` | ✅ 4 audit commands |
+| `skill/rules/` | ✅ `reliability-rules.md` |
 | `install.sh` | ✅ Project, global, Cursor, Claude scopes |
 | `validate.sh` | ✅ Structure integrity checks |
 | `ext/` submodule install | ✅ See `docs/AI-KIT-INTEGRATION.md` |

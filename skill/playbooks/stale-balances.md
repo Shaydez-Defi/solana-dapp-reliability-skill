@@ -57,6 +57,6 @@
 
 ## Related Modules
 
-- `skill/reliability/state-sync-failures.md`
-- `skill/reliability/transaction-failures.md` (if tx actually failed)
-- `skill/reliability/realtime-failures.md` (if websocket stopped updating)
+- `reliability/state-sync-failures.md`
+- `reliability/transaction-failures.md` (if tx actually failed)
+- `reliability/realtime-failures.md` (if websocket stopped updating)

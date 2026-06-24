@@ -10,12 +10,12 @@ User asks about frontend architecture, data flow, or general dApp health — bro
 
 ## Steps
 
-1. Read `rules/reliability-rules.md`.
-2. Load modules as needed based on what you find:
-   - `skill/reliability/state-sync-failures.md`
-   - `skill/reliability/wallet-failures.md`
-   - `skill/reliability/realtime-failures.md`
-   - `skill/anti-patterns/production-anti-patterns.md`
+1. **Read** `rules/reliability-rules.md`.
+2. **Read** modules as needed based on what you find in the codebase:
+   - `reliability/state-sync-failures.md`
+   - `reliability/wallet-failures.md`
+   - `reliability/realtime-failures.md`
+   - `anti-patterns/production-anti-patterns.md`
 
 3. Review architecture layers:
 

@@ -63,11 +63,11 @@ Alert when `ws_last_message_age_seconds > 60` during active session.
 - Heartbeat: no message in 30–60s → proactive reconnect.
 - Central subscription manager with reference counting.
 - Hybrid architecture: websocket + periodic RPC reconciliation.
-- See `skill/reliability/realtime-failures.md`.
+- See `reliability/realtime-failures.md`.
 
 ---
 
 ## Related Modules
 
-- `skill/reliability/state-sync-failures.md`
-- `skill/reliability/rpc-failures.md`
+- `reliability/state-sync-failures.md`
+- `reliability/rpc-failures.md`

@@ -73,11 +73,11 @@ Primary (sends + reads) ──▶ unhealthy? ──▶ Secondary
 - Never use public mainnet RPC in production.
 - Monitor p95 latency and error rate per provider.
 - Run game-day drill: disable primary, verify failover < 30s.
-- See `skill/reliability/rpc-failures.md`.
+- See `reliability/rpc-failures.md`.
 
 ---
 
 ## Related Modules
 
-- `skill/reliability/transaction-failures.md` (if only sends fail)
-- `skill/reliability/realtime-failures.md` (if only websocket fails)
+- `reliability/transaction-failures.md` (if only sends fail)
+- `reliability/realtime-failures.md` (if only websocket fails)

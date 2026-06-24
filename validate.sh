@@ -6,6 +6,7 @@ set -euo pipefail
 PASS=0
 FAIL=0
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILL_ROOT="${REPO_ROOT}/skill"
 
 check() {
   local description="$1"
@@ -21,10 +22,6 @@ check() {
 
 file_exists() {
   [ -f "$1" ]
-}
-
-dir_exists() {
-  [ -d "$1" ]
 }
 
 has_frontmatter_field() {
@@ -47,13 +44,17 @@ echo ""
 
 # --- SKILL.md router ---
 echo "[SKILL Router]"
-SKILL="${REPO_ROOT}/skill/SKILL.md"
+SKILL="${SKILL_ROOT}/SKILL.md"
 if file_exists "$SKILL"; then
   check "skill/SKILL.md exists" 0
   has_frontmatter_field "$SKILL" "name" && r=0 || r=1
   check "SKILL.md has name:" $r
   has_frontmatter_field "$SKILL" "description" && r=0 || r=1
   check "SKILL.md has description:" $r
+  grep -q "Path Resolution" "$SKILL" && r=0 || r=1
+  check "SKILL.md documents path resolution" $r
+  grep -q "Read" "$SKILL" && r=0 || r=1
+  check "SKILL.md instructs Read tool usage" $r
 else
   check "skill/SKILL.md exists" 1
 fi
@@ -69,7 +70,7 @@ MODULES=(
   rpc-failures.md
 )
 for m in "${MODULES[@]}"; do
-  file_exists "${REPO_ROOT}/skill/reliability/${m}" && r=0 || r=1
+  file_exists "${SKILL_ROOT}/reliability/${m}" && r=0 || r=1
   check "skill/reliability/${m}" $r
 done
 echo ""
@@ -84,7 +85,7 @@ PLAYBOOKS=(
   rpc-outage.md
 )
 for p in "${PLAYBOOKS[@]}"; do
-  file_exists "${REPO_ROOT}/skill/playbooks/${p}" && r=0 || r=1
+  file_exists "${SKILL_ROOT}/playbooks/${p}" && r=0 || r=1
   check "skill/playbooks/${p}" $r
 done
 echo ""
@@ -92,12 +93,12 @@ echo ""
 # --- Supporting knowledge ---
 echo "[Supporting Knowledge]"
 for f in \
-  skill/migration/kit-migration.md \
-  skill/anti-patterns/production-anti-patterns.md \
-  skill/audits/reliability-checklist.md \
+  migration/kit-migration.md \
+  anti-patterns/production-anti-patterns.md \
+  audits/reliability-checklist.md \
   rules/reliability-rules.md; do
-  file_exists "${REPO_ROOT}/${f}" && r=0 || r=1
-  check "$f" $r
+  file_exists "${SKILL_ROOT}/${f}" && r=0 || r=1
+  check "skill/${f}" $r
 done
 echo ""
 
@@ -110,31 +111,24 @@ COMMANDS=(
   migrate-to-kit.md
 )
 for c in "${COMMANDS[@]}"; do
-  file_exists "${REPO_ROOT}/commands/${c}" && r=0 || r=1
-  check "commands/${c}" $r
+  file_exists "${SKILL_ROOT}/commands/${c}" && r=0 || r=1
+  check "skill/commands/${c}" $r
 done
 echo ""
 
-# --- SKILL.md router links resolve ---
+# --- SKILL.md router links resolve (paths relative to skill root) ---
 echo "[Router Links]"
 if file_exists "$SKILL"; then
   broken=0
   while IFS= read -r path; do
     [ -z "$path" ] && continue
-    # Paths in SKILL.md are relative to skill/ or repo root
-    if [[ "$path" == skill/* ]]; then
-      target="${REPO_ROOT}/${path}"
-    elif [[ "$path" == commands/* ]] || [[ "$path" == rules/* ]]; then
-      target="${REPO_ROOT}/${path}"
-    else
-      target="${REPO_ROOT}/skill/${path}"
-    fi
+    target="${SKILL_ROOT}/${path}"
     if [ ! -e "$target" ]; then
-      echo "  FAIL: Broken router reference -> $path"
+      echo "  FAIL: Broken router reference -> ${path}"
       FAIL=$((FAIL + 1))
       broken=$((broken + 1))
     fi
-  done < <(grep -oE '`[a-z0-9_./-]+\.md`' "$SKILL" | tr -d '`' | sort -u)
+  done < <(grep -oE '`[a-z0-9_./-]+\.md`' "$SKILL" | tr -d '`' | grep -v '^SKILL' | sort -u)
 
   if [ "$broken" -eq 0 ]; then
     check "All SKILL.md module references resolve" 0
@@ -149,12 +143,12 @@ echo "[Installer]"
 if file_exists "${REPO_ROOT}/install.sh"; then
   grep -q "SKILL_NAME" "${REPO_ROOT}/install.sh" && r=0 || r=1
   check "install.sh defines SKILL_NAME" $r
-  grep -q "solana-dapp-reliability" "${REPO_ROOT}/install.sh" && r=0 || r=1
-  check "install.sh targets solana-dapp-reliability" $r
+  grep -q "commands rules" "${REPO_ROOT}/install.sh" && r=0 || r=1
+  check "install.sh copies commands and rules from skill/" $r
 fi
 echo ""
 
-# --- Examples (hackathon submission) ---
+# --- Examples ---
 echo "[Examples]"
 file_exists "${REPO_ROOT}/examples/demo-audit.md" && r=0 || r=1
 check "examples/demo-audit.md exists" $r

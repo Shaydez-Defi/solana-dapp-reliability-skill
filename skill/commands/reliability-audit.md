@@ -10,9 +10,9 @@ User asks to audit, review, or score their Solana dApp for production readiness.
 
 ## Steps
 
-1. Read `rules/reliability-rules.md`.
-2. Read `skill/audits/reliability-checklist.md`.
-3. Scan the codebase for:
+1. **Read** `rules/reliability-rules.md`.
+2. **Read** `audits/reliability-checklist.md`.
+3. Scan the user's codebase for:
    - Wallet adapter setup and event handling
    - Transaction build → simulate → sign → send → confirm pipeline
    - Data fetching, caching, and invalidation patterns
@@ -21,16 +21,15 @@ User asks to audit, review, or score their Solana dApp for production readiness.
    - Error states and user messaging
 
 4. Score each category 0–100 using the checklist. Be honest — devnet-only patterns score low.
+5. Output using the audit template from `audits/reliability-checklist.md`.
 
-5. Output using the audit template from `reliability-checklist.md`.
-
-6. For each finding, reference the relevant module:
-   - Wallet issues → `skill/reliability/wallet-failures.md`
-   - Tx issues → `skill/reliability/transaction-failures.md`
-   - State issues → `skill/reliability/state-sync-failures.md`
-   - Realtime → `skill/reliability/realtime-failures.md`
-   - RPC → `skill/reliability/rpc-failures.md`
-   - Anti-patterns → `skill/anti-patterns/production-anti-patterns.md`
+6. For each finding, **Read** the relevant module if you need fix guidance:
+   - Wallet issues → `reliability/wallet-failures.md`
+   - Tx issues → `reliability/transaction-failures.md`
+   - State issues → `reliability/state-sync-failures.md`
+   - Realtime → `reliability/realtime-failures.md`
+   - RPC → `reliability/rpc-failures.md`
+   - Anti-patterns → `anti-patterns/production-anti-patterns.md`
 
 ## Rules
 

@@ -14,7 +14,7 @@ Opinionated. These patterns cause production incidents. Call them out directly.
 - Heartbeat monitoring + proactive reconnect with backoff.
 - Hybrid: websocket deltas + periodic RPC reconciliation.
 - Degraded mode UI when stream is unhealthy.
-- See `skill/reliability/realtime-failures.md`.
+- See `reliability/realtime-failures.md`.
 
 ---
 
@@ -52,7 +52,7 @@ Opinionated. These patterns cause production incidents. Call them out directly.
 
 **Why it fails:** Shared rate limits, no SLA, throttled during congestion. Your app dies when Solana trends on Twitter.
 
-**Better approach:** Dedicated provider with API key. Secondary failover provider. See `skill/reliability/rpc-failures.md`.
+**Better approach:** Dedicated provider with API key. Secondary failover provider. See `reliability/rpc-failures.md`.
 
 ---
 

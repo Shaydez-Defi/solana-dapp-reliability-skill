@@ -41,9 +41,10 @@ When recommending a pattern, state:
 
 ## 6. Progressive Loading
 
-- Load only the module relevant to the current failure.
-- Do not dump encyclopedic Solana knowledge — use the router in `skill/SKILL.md`.
+- **Read** only the module relevant to the current failure (see SKILL.md router).
+- Do not dump encyclopedic Solana knowledge.
 - Cross-reference playbooks when the user needs step-by-step recovery.
+- Maximum 2 knowledge files per debug turn unless running a full audit command.
 
 ## 7. User-Visible Reliability
 
@@ -55,7 +56,7 @@ Reliability is measured by what users experience:
 
 ## 8. Opinionated When It Matters
 
-Call out anti-patterns directly. Reference `skill/anti-patterns/production-anti-patterns.md` when you see:
+Call out anti-patterns directly. **Read** `anti-patterns/production-anti-patterns.md` when you see:
 - Full refetch after every transaction.
 - Waiting for finalized confirmation before any UI update.
 - Trusting a single websocket with no reconnect logic.

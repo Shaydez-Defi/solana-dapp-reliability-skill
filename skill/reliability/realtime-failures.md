@@ -29,7 +29,7 @@ Websocket drops, subscription leaks, and silent data staleness.
 - On reconnect: full resubscribe + RPC reconciliation snapshot.
 
 ### Prevention
-- See `skill/playbooks/websocket-failure.md`.
+- See `playbooks/websocket-failure.md`.
 - Never assume websocket is alive without liveness checks.
 
 ---

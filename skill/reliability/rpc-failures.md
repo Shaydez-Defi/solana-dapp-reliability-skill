@@ -63,7 +63,7 @@ Rate limits, provider degradation, and outage survival.
 
 ### Prevention
 - Multi-provider config from day one.
-- See `skill/playbooks/rpc-outage.md`.
+- See `playbooks/rpc-outage.md`.
 - Alert on p95 latency > 2s for core methods.
 
 ---
@@ -95,7 +95,7 @@ Rate limits, provider degradation, and outage survival.
 ### Prevention
 - Minimum two independent RPC providers.
 - Env-based config with no hardcoded endpoints.
-- Runbook: `skill/playbooks/rpc-outage.md`.
+- Runbook: `playbooks/rpc-outage.md`.
 
 ---
 

@@ -65,4 +65,4 @@
 
 ## Related Modules
 
-- `skill/reliability/wallet-failures.md`
+- `reliability/wallet-failures.md`

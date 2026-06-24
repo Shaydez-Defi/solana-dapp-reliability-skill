@@ -127,33 +127,36 @@ solana-dapp-reliability-skill/
 ├── README.md
 ├── LICENSE
 ├── install.sh
-├── skill/
-│   ├── SKILL.md                    # Router — loads only relevant modules
-│   ├── reliability/
-│   │   ├── wallet-failures.md
-│   │   ├── transaction-failures.md
-│   │   ├── state-sync-failures.md
-│   │   ├── realtime-failures.md
-│   │   └── rpc-failures.md
-│   ├── playbooks/
-│   │   ├── stale-balances.md
-│   │   ├── tx-stuck.md
-│   │   ├── websocket-failure.md
-│   │   ├── wallet-reconnect.md
-│   │   └── rpc-outage.md
-│   ├── migration/
-│   │   └── kit-migration.md
-│   ├── anti-patterns/
-│   │   └── production-anti-patterns.md
-│   └── audits/
-│       └── reliability-checklist.md
-├── commands/
-│   ├── reliability-audit.md
-│   ├── tx-flow-audit.md
-│   ├── frontend-health-check.md
-│   └── migrate-to-kit.md
-└── rules/
-    └── reliability-rules.md
+├── validate.sh
+├── SUBMISSION.md
+├── examples/
+└── skill/                          # Skill root — all paths in SKILL.md are relative here
+    ├── SKILL.md                    # Router — loads only relevant modules
+    ├── reliability/
+    │   ├── wallet-failures.md
+    │   ├── transaction-failures.md
+    │   ├── state-sync-failures.md
+    │   ├── realtime-failures.md
+    │   └── rpc-failures.md
+    ├── playbooks/
+    │   ├── stale-balances.md
+    │   ├── tx-stuck.md
+    │   ├── websocket-failure.md
+    │   ├── wallet-reconnect.md
+    │   └── rpc-outage.md
+    ├── migration/
+    │   └── kit-migration.md
+    ├── anti-patterns/
+    │   └── production-anti-patterns.md
+    ├── audits/
+    │   └── reliability-checklist.md
+    ├── commands/
+    │   ├── reliability-audit.md
+    │   ├── tx-flow-audit.md
+    │   ├── frontend-health-check.md
+    │   └── migrate-to-kit.md
+    └── rules/
+        └── reliability-rules.md
 ```
 
 ---
