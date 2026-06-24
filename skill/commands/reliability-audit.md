@@ -1,39 +1,43 @@
 # Command: /reliability-audit
 
-Full codebase reliability review.
+Full codebase reliability review using **The Reliability Framework**.
 
 ---
 
 ## When to Run
 
-User asks to audit, review, or score their Solana dApp for production readiness.
+- User asks to audit, review, or score their Solana dApp
+- User asks: *"Is my dApp ready for mainnet users?"*
+- Pre-launch production readiness review
 
 ## Steps
 
-1. **Read** `rules/reliability-rules.md`.
-2. **Read** `audits/reliability-checklist.md`.
-3. Scan the user's codebase for:
-   - Wallet adapter setup and event handling
-   - Transaction build → simulate → sign → send → confirm pipeline
-   - Data fetching, caching, and invalidation patterns
-   - Websocket / subscription usage
-   - RPC endpoint configuration and error handling
-   - Error states and user messaging
+1. **Read** `framework/reliability-framework.md` (five layers).
+2. **Read** `rules/reliability-rules.md`.
+3. **Read** `audits/reliability-score.md` — scoring methodology.
+4. **Read** `audits/production-readiness-checklist.md` — launch checklist.
+5. Scan the codebase across all five layers.
+6. Score each layer 0–100 using deduction tables in `reliability-score.md`.
+7. Return:
+   - Five layer scores + overall score
+   - Production readiness checklist (passed / total)
+   - Launch verdict (ready / soft launch / not ready)
+   - Priority fixes ranked by user impact
+8. For each finding, **Read** the relevant failure module; recommend the matching **pattern** doc.
 
-4. Score each category 0–100 using the checklist. Be honest — devnet-only patterns score low.
-5. Output using the audit template from `audits/reliability-checklist.md`.
+## Layer → Module Map
 
-6. For each finding, **Read** the relevant module if you need fix guidance:
-   - Wallet issues → `reliability/wallet-failures.md`
-   - Tx issues → `reliability/transaction-failures.md`
-   - State issues → `reliability/state-sync-failures.md`
-   - Realtime → `reliability/realtime-failures.md`
-   - RPC → `reliability/rpc-failures.md`
-   - Anti-patterns → `anti-patterns/production-anti-patterns.md`
+| Layer | Failures | Patterns |
+|-------|----------|----------|
+| 1 Wallet | `reliability/wallet-failures.md` | — |
+| 2 Transaction | `reliability/transaction-failures.md` | `patterns/transaction-recovery.md` |
+| 3 State | `reliability/state-sync-failures.md` | `patterns/optimistic-ui.md`, `patterns/reconciliation-patterns.md` |
+| 4 Realtime | `reliability/realtime-failures.md` | `patterns/hybrid-subscriptions.md` |
+| 5 Infrastructure | `reliability/rpc-failures.md` | `patterns/rpc-failover.md` |
 
 ## Rules
 
 - Cite specific files and line patterns when possible.
-- Rank recommendations by **user impact**, not code elegance.
-- Distinguish "works on devnet" from "production-ready."
-- Include at least one quick win and one strategic improvement.
+- State Severity / Frequency / User Impact for top findings.
+- Distinguish devnet assumptions from mainnet readiness.
+- Include one quick win and one strategic improvement per layer with gaps.

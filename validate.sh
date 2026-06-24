@@ -93,8 +93,11 @@ echo ""
 # --- Supporting knowledge ---
 echo "[Supporting Knowledge]"
 for f in \
+  framework/reliability-framework.md \
   migration/kit-migration.md \
   anti-patterns/production-anti-patterns.md \
+  audits/reliability-score.md \
+  audits/production-readiness-checklist.md \
   audits/reliability-checklist.md \
   rules/reliability-rules.md; do
   file_exists "${SKILL_ROOT}/${f}" && r=0 || r=1
@@ -103,6 +106,20 @@ done
 echo ""
 
 # --- Commands ---
+echo "[Patterns]"
+PATTERNS=(
+  optimistic-ui.md
+  reconciliation-patterns.md
+  hybrid-subscriptions.md
+  rpc-failover.md
+  transaction-recovery.md
+)
+for p in "${PATTERNS[@]}"; do
+  file_exists "${SKILL_ROOT}/patterns/${p}" && r=0 || r=1
+  check "skill/patterns/${p}" $r
+done
+echo ""
+
 echo "[Commands]"
 COMMANDS=(
   reliability-audit.md
@@ -143,8 +160,8 @@ echo "[Installer]"
 if file_exists "${REPO_ROOT}/install.sh"; then
   grep -q "SKILL_NAME" "${REPO_ROOT}/install.sh" && r=0 || r=1
   check "install.sh defines SKILL_NAME" $r
-  grep -q "commands rules" "${REPO_ROOT}/install.sh" && r=0 || r=1
-  check "install.sh copies commands and rules from skill/" $r
+  grep -q "framework reliability playbooks patterns" "${REPO_ROOT}/install.sh" && r=0 || r=1
+  check "install.sh copies full skill tree from skill/" $r
 fi
 echo ""
 

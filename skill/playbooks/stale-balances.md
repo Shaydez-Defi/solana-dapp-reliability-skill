@@ -2,7 +2,9 @@
 
 **User report:** "I swapped/deposited but my balance didn't update."
 
-**Severity:** High — most common post-tx complaint; erodes trust even when funds are safe.
+**Severity:** High  
+**Frequency:** Very Common  
+**User Impact:** High — most common post-tx complaint; erodes trust even when funds are safe.
 
 ---
 

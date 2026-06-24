@@ -2,7 +2,9 @@
 
 **User report:** "Nothing loads" / "All transactions fail" / app-wide failure.
 
-**Severity:** Critical — entire dApp non-functional for all users.
+**Severity:** Critical  
+**Frequency:** Occasional  
+**User Impact:** Critical — entire dApp non-functional for all users.
 
 ---
 

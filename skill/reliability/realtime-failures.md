@@ -1,12 +1,17 @@
 # Realtime Failures
 
-Websocket drops, subscription leaks, and silent data staleness.
+**Layer 4 — Realtime Reliability**
+
+Websocket drops, subscription leaks, and silent data staleness.  
+**Pattern:** `patterns/hybrid-subscriptions.md`
 
 ---
 
 ## Problem: Silent Websocket Disconnect
 
-**Severity:** High — data frozen with no error; users think the app is dead.
+**Severity:** High  
+**Frequency:** Very Common  
+**User Impact:** High — data frozen with no error; users think the app is dead.
 
 ### Symptoms
 - UI looks live but data frozen for minutes.
@@ -38,7 +43,9 @@ Websocket drops, subscription leaks, and silent data staleness.
 
 ## Problem: Dropped Events
 
-**Severity:** High — missed position/balance updates during active trading.
+**Severity:** High  
+**Frequency:** Occasional (high load)  
+**User Impact:** High — missed position/balance updates during active trading.
 
 ### Symptoms
 - Missed account updates during high activity.
@@ -68,7 +75,9 @@ Websocket drops, subscription leaks, and silent data staleness.
 
 ## Problem: Duplicate Events
 
-**Severity:** Medium — UI flicker and wrong counters; rarely causes fund loss.
+**Severity:** Medium  
+**Frequency:** Common (after reconnect)  
+**User Impact:** Medium — UI flicker and wrong counters; rarely causes fund loss.
 
 ### Symptoms
 - Balance flickers between two values.
@@ -98,7 +107,9 @@ Websocket drops, subscription leaks, and silent data staleness.
 
 ## Problem: Memory Leaks From Subscriptions
 
-**Severity:** Medium — degrades performance over long sessions; not immediate.
+**Severity:** Medium  
+**Frequency:** Occasional (long sessions)  
+**User Impact:** Medium — degrades performance over long sessions; not immediate.
 
 ### Symptoms
 - Tab slows after 30+ minutes.
@@ -128,7 +139,9 @@ Websocket drops, subscription leaks, and silent data staleness.
 
 ## Problem: Reconnection Storm
 
-**Severity:** Critical — triggers RPC bans; makes outage worse than the original failure.
+**Severity:** Critical  
+**Frequency:** Occasional  
+**User Impact:** Critical — triggers RPC bans; makes outage worse than the original failure.
 
 ### Symptoms
 - Hundreds of reconnect attempts per minute.

@@ -1,12 +1,17 @@
 # RPC Failures
 
-Rate limits, provider degradation, and outage survival.
+**Layer 5 — Infrastructure Reliability**
+
+Rate limits, provider degradation, and outage survival.  
+**Pattern:** `patterns/rpc-failover.md`
 
 ---
 
 ## Problem: Rate Limiting (HTTP 429)
 
-**Severity:** High — partial outages; worse during traffic spikes and airdrops.
+**Severity:** High  
+**Frequency:** Very Common (public RPC)  
+**User Impact:** High — partial outages; worse during traffic spikes and airdrops.
 
 ### Symptoms
 - Intermittent `429 Too Many Requests`.
@@ -40,7 +45,9 @@ Rate limits, provider degradation, and outage survival.
 
 ## Problem: Provider Degradation
 
-**Severity:** High — slow txs and timeouts without clear error messages.
+**Severity:** High  
+**Frequency:** Common (congestion)  
+**User Impact:** High — slow txs and timeouts without clear error messages.
 
 ### Symptoms
 - Slow responses (2–10s) without hard errors.
@@ -74,7 +81,9 @@ Rate limits, provider degradation, and outage survival.
 
 ## Problem: Hard Outage
 
-**Severity:** Critical — all reads and writes fail; dApp is down.
+**Severity:** Critical  
+**Frequency:** Occasional  
+**User Impact:** Critical — all reads and writes fail; dApp is down.
 
 ### Symptoms
 - All RPC calls fail: connection refused, 503, DNS errors.
@@ -107,7 +116,9 @@ Rate limits, provider degradation, and outage survival.
 
 ## Problem: Retry Amplification
 
-**Severity:** High — turns brief blips into extended bans and cost spikes.
+**Severity:** High  
+**Frequency:** Common (misconfigured clients)  
+**User Impact:** High — turns brief blips into extended bans and cost spikes.
 
 ### Symptoms
 - Brief outage becomes prolonged ban.
@@ -138,7 +149,9 @@ Rate limits, provider degradation, and outage survival.
 
 ## Problem: Stale or Forked RPC Data
 
-**Severity:** High — wrong account data and rejected transactions across providers.
+**Severity:** High  
+**Frequency:** Occasional  
+**User Impact:** High — wrong account data and rejected transactions across providers.
 
 ### Symptoms
 - Account data differs between refresh and websocket.

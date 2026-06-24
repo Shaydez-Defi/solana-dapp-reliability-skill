@@ -1,12 +1,17 @@
 # Transaction Failures
 
-How transactions break in production and how to recover.
+**Layer 2 — Transaction Reliability**
+
+How transactions break in production and how to recover.  
+**Pattern:** `patterns/transaction-recovery.md`
 
 ---
 
 ## Problem: Expired Blockhash
 
-**Severity:** High — tx never lands; user may re-sign unnecessarily.
+**Severity:** High  
+**Frequency:** Common (congestion)  
+**User Impact:** High — tx never lands; user may re-sign unnecessarily.
 
 ### Symptoms
 - Error: `Blockhash not found` or `Transaction expired`.
@@ -35,7 +40,9 @@ Blockhashes are valid ~60–90 seconds. Slow user approval, network latency, or 
 
 ## Problem: Simulation Failure
 
-**Severity:** High — user signs failing txs without understanding why.
+**Severity:** High  
+**Frequency:** Very Common (mainnet)  
+**User Impact:** High — user signs failing txs without understanding why.
 
 ### Symptoms
 - Wallet shows generic "Transaction failed" with no detail.
@@ -65,7 +72,9 @@ On-chain program rejected the instruction: insufficient funds, wrong account own
 
 ## Problem: User Rejection
 
-**Severity:** Medium — no funds moved; UX confusion if unhandled.
+**Severity:** Medium  
+**Frequency:** Very Common  
+**User Impact:** Medium — no funds moved; UX confusion if unhandled.
 
 ### Symptoms
 - Tx status stuck at "pending" or silently cleared.
@@ -91,7 +100,9 @@ User declined in wallet popup. App did not handle `WalletSignTransactionError` o
 
 ## Problem: Duplicate Submissions
 
-**Severity:** Critical — double charges, duplicate mints, real financial loss.
+**Severity:** Critical  
+**Frequency:** Occasional  
+**User Impact:** Critical — double charges, duplicate mints, real financial loss.
 
 ### Symptoms
 - User charged twice for same action.
@@ -120,7 +131,9 @@ No idempotency guard; button not disabled during in-flight tx; retry logic resub
 
 ## Problem: Compute Budget Exceeded
 
-**Severity:** High — complex routes fail unpredictably under load.
+**Severity:** High  
+**Frequency:** Common (DeFi routes)  
+**User Impact:** High — complex routes fail unpredictably under load.
 
 ### Symptoms
 - `Computational budget exceeded` in logs.
@@ -149,7 +162,9 @@ Transaction exceeded default 200k CU limit. Congestion makes execution less pred
 
 ## Problem: Confirmation Inconsistency
 
-**Severity:** Critical — UI lies about success/failure; destroys user trust.
+**Severity:** Critical  
+**Frequency:** Common  
+**User Impact:** Critical — UI lies about success/failure; destroys user trust.
 
 ### Symptoms
 - UI shows success but tx failed on-chain.

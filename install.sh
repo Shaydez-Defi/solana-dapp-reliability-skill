@@ -50,7 +50,7 @@ install_skill() {
   cp "${REPO_DIR}/skill/SKILL.md" "${target_dir}/SKILL.md"
 
   # Knowledge modules
-  for subdir in reliability playbooks migration anti-patterns audits commands rules; do
+  for subdir in framework reliability playbooks patterns migration anti-patterns audits commands rules; do
     if [[ -d "${REPO_DIR}/skill/${subdir}" ]]; then
       mkdir -p "${target_dir}/${subdir}"
       cp -r "${REPO_DIR}/skill/${subdir}/." "${target_dir}/${subdir}/"

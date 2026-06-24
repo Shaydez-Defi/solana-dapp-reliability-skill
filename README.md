@@ -1,13 +1,25 @@
 # solana-dapp-reliability-skill
 
-**Teach AI coding agents how to diagnose, prevent, and recover from the failures that make Solana dApps feel broken in production.**
+# Production Reliability Engineering for Solana dApps
 
-Most Solana resources teach how to connect wallets, send transactions, and read accounts. Very few teach why dApps fail in production — stale balances, wallet reconnect loops, websocket drops, RPC outages, confirmation confusion, optimistic UI drift.
+**A five-layer reliability framework AI agents apply to diagnose failures, score readiness, and implement prevention patterns.**
+
+Most Solana skills teach how to build. Official kits cover wallets, transactions, testing, security, and @solana/kit. **None own production failure recovery and reliability engineering.**
 
 This skill fills that gap.
 
-> **This is NOT** a Solana tutorial, React guide, or web3.js reference.  
-> **This IS** a production reliability playbook organized around **failures**, not frameworks.
+> **This is NOT** a Solana tutorial or frontend troubleshooting guide.  
+> **This IS** The Reliability Framework — failures teach diagnosis, patterns teach prevention.
+
+## The Reliability Framework
+
+| Layer | Focus |
+|-------|-------|
+| 1 — Wallet | Connect, sign, reconnect, mobile |
+| 2 — Transaction | Simulate, send, confirm, recover |
+| 3 — State | Balances, optimistic UI, reconciliation |
+| 4 — Realtime | Websockets, subscriptions, hybrid fallback |
+| 5 — Infrastructure | RPC failover, rate limits, health |
 
 ---
 
@@ -107,15 +119,17 @@ your-dapp/.grok/skills/solana-dapp-reliability/SKILL.md
 
 ## Reliability Score Example
 
+See `skill/audits/reliability-score.md` for full methodology.
+
 ```
-Wallet Reliability:       84/100
-Transaction Reliability:  72/100
-State Consistency:        58/100
-Realtime Reliability:     67/100
-RPC Reliability:          91/100
-Failure Recovery:         42/100
-─────────────────────────────────
-Overall Reliability:      69/100
+Wallet Reliability:          84/100
+Transaction Reliability:     72/100
+State Reliability:           58/100
+Realtime Reliability:        67/100
+Infrastructure Reliability:  91/100
+────────────────────────────────────
+Overall Reliability:         74/100
+Mainnet Readiness:           28/35 checklist items — Soft launch OK
 ```
 
 ---
@@ -131,7 +145,15 @@ solana-dapp-reliability-skill/
 ├── SUBMISSION.md
 ├── examples/
 └── skill/                          # Skill root — all paths in SKILL.md are relative here
-    ├── SKILL.md                    # Router — loads only relevant modules
+    ├── SKILL.md                    # Framework router
+    ├── framework/
+    │   └── reliability-framework.md
+    ├── patterns/
+    │   ├── optimistic-ui.md
+    │   ├── reconciliation-patterns.md
+    │   ├── hybrid-subscriptions.md
+    │   ├── rpc-failover.md
+    │   └── transaction-recovery.md
     ├── reliability/
     │   ├── wallet-failures.md
     │   ├── transaction-failures.md
@@ -149,6 +171,8 @@ solana-dapp-reliability-skill/
     ├── anti-patterns/
     │   └── production-anti-patterns.md
     ├── audits/
+    │   ├── reliability-score.md
+    │   ├── production-readiness-checklist.md
     │   └── reliability-checklist.md
     ├── commands/
     │   ├── reliability-audit.md

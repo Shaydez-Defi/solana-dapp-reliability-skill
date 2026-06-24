@@ -1,12 +1,18 @@
 # Wallet Failures
 
+**Layer 1 — Wallet Reliability**
+
 Everything that causes wallet UX to fail in production.
+
+Each failure includes **Severity**, **Frequency**, and **User Impact** to prioritize fixes.
 
 ---
 
 ## Problem: Wallet Shows Connected But Cannot Sign
 
-**Severity:** Critical — blocks all transactions; user sees connected UI but cannot sign.
+**Severity:** Critical  
+**Frequency:** Common  
+**User Impact:** High — blocks all transactions; user sees connected UI but cannot sign.
 
 ### Symptoms
 - UI displays connected address; sign/send buttons do nothing or hang.
@@ -41,7 +47,9 @@ Everything that causes wallet UX to fail in production.
 
 ## Problem: Reconnect Loop
 
-**Severity:** Critical — user cannot complete any transaction; connect flow is broken.
+**Severity:** Critical  
+**Frequency:** Common  
+**User Impact:** High — user cannot complete any transaction; connect flow is broken.
 
 ### Symptoms
 - Wallet connects, immediately disconnects, repeats indefinitely.
@@ -75,7 +83,9 @@ Everything that causes wallet UX to fail in production.
 
 ## Problem: Mobile Wallet Deep-Link Failures
 
-**Severity:** High — blocks mobile users from connecting; desktop may work fine.
+**Severity:** High  
+**Frequency:** Common (mobile)  
+**User Impact:** High — blocks mobile users from connecting; desktop may work fine.
 
 ### Symptoms
 - User taps Connect; wallet app opens but dApp never receives approval.
@@ -109,7 +119,9 @@ Everything that causes wallet UX to fail in production.
 
 ## Problem: Multi-Wallet Conflicts
 
-**Severity:** High — wrong signer or stale balances; can cause failed txs or user distrust.
+**Severity:** High  
+**Frequency:** Occasional  
+**User Impact:** High — wrong signer or stale balances; can cause failed txs or user distrust.
 
 ### Symptoms
 - Wrong wallet signs the transaction.
@@ -140,7 +152,9 @@ Everything that causes wallet UX to fail in production.
 
 ## Problem: Session Persistence Across Refresh
 
-**Severity:** Medium — annoying reconnect friction; does not block txs once connected.
+**Severity:** Medium  
+**Frequency:** Common  
+**User Impact:** Medium — annoying reconnect friction; does not block txs once connected.
 
 ### Symptoms
 - User must reconnect on every page load.

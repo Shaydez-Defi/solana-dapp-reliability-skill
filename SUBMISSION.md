@@ -10,13 +10,15 @@
 
 ## One-Line Pitch
 
-Teach AI coding agents how to diagnose, prevent, and recover from the failures that make Solana dApps feel broken in production.
+**Production Reliability Engineering for Solana dApps** — a five-layer framework AI agents use to diagnose failures, score mainnet readiness, and apply prevention patterns.
 
 ---
 
 ## Why This Skill Should Be Added to Solana AI Kit
 
-Solana AI Kit ships 18+ skills for **building** — Anchor, DeFi integrations, mobile, security. None focus on **production reliability** for frontend dApps.
+Solana AI Kit ships 18+ skills for **building** — wallets, transactions, testing, security, @solana/kit. Protocol skills cover DeFi integrations. **No skill owns production failure recovery and reliability engineering.**
+
+This is not "Solana frontend troubleshooting." It is **The Reliability Framework** — a memorable model judges can reference.
 
 Every team using the kit will eventually hit:
 - Stale balances after transactions
@@ -29,14 +31,25 @@ This skill fills a gap the kit's `solana-dev` and `sendai` skills don't cover: *
 
 ---
 
+## The Reliability Framework
+
+| Layer | What it covers |
+|-------|----------------|
+| 1 — Wallet Reliability | Connect, sign, reconnect, mobile |
+| 2 — Transaction Reliability | Simulate, send, confirm, recover |
+| 3 — State Reliability | Stale balances, optimistic UI, reconciliation |
+| 4 — Realtime Reliability | Websockets, subscriptions, hybrid fallback |
+| 5 — Infrastructure Reliability | RPC failover, rate limits, health |
+
+**Failures** (`reliability/`) teach diagnosis. **Patterns** (`patterns/`) teach prevention. **Audits** (`audits/reliability-score.md`) teach scoring.
+
 ## What Makes It Different
 
 | Most Solana skills | This skill |
 |--------------------|------------|
-| How to connect a wallet | Why wallet UX fails in production |
-| How to send a transaction | Why txs get stuck and how to recover |
-| How to read accounts | Why UI state drifts from on-chain truth |
-| Framework tutorials | Failure-mode playbooks |
+| How to build | How to survive production |
+| Tutorial content | Scored reliability framework |
+| Single-shot answers | Failures + patterns + readiness checklist |
 
 **Organized around failures, not frameworks.**
 

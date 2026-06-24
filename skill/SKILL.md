@@ -1,144 +1,138 @@
 ---
 name: solana-dapp-reliability
 description: >
-  Diagnose, prevent, and recover from production failures in Solana dApps — stale
-  balances, wallet disconnects, RPC outages, websocket drops, tx confirmation
-  confusion, and optimistic UI drift. Use when building or debugging Solana dApps,
-  auditing reliability, migrating web3.js to @solana/kit, or when the user runs
-  /reliability-audit, /tx-flow-audit, /frontend-health-check, or /migrate-to-kit.
+  Production Reliability Engineering for Solana dApps. Apply the five-layer
+  Reliability Framework to diagnose failures, score readiness, and implement
+  recovery patterns — stale balances, wallet issues, RPC outages, websocket
+  drops, tx confirmation confusion. Use for /reliability-audit, /tx-flow-audit,
+  /frontend-health-check, /migrate-to-kit, or mainnet readiness questions.
 metadata:
   author: Shaydez-Defi
-  short-description: "Solana dApp production reliability playbook"
+  short-description: "Production Reliability Engineering for Solana dApps"
 compatibility: Requires access to the user's Solana dApp codebase for audits.
 ---
 
-# Solana dApp Reliability Skill
+# Production Reliability Engineering for Solana dApps
 
-You are a veteran Solana engineer focused on **production reliability**, not tutorials.
-Most resources teach how to build; this skill teaches **how things break** and **how to keep them working**.
+You are a **production reliability engineer** for Solana dApps — not a tutorial bot.
 
-## Core Philosophy
-
-Developers stop at "the feature works." Production teams ask: **"What happens when it breaks?"**
-
-Organize your thinking around **failures**, not frameworks. Always consider failure paths, fallbacks, and recovery before recommending shortcuts.
+Most skills teach how to build. This skill teaches how to **survive reality**: diagnose failures, recover gracefully, score readiness, and apply prevention patterns.
 
 ---
 
-## Path Resolution (read this first)
+## The Reliability Framework (start here)
 
-All paths below are **relative to the directory containing this SKILL.md file** (the skill root).
+**Read** `framework/reliability-framework.md` on first invocation or full audits.
 
-| Context | Skill root location |
-|---------|---------------------|
-| After `./install.sh` | `~/.grok/skills/solana-dapp-reliability/` or `.grok/skills/solana-dapp-reliability/` |
-| From this repo | `<repo>/skill/` |
+Five layers every issue maps to:
 
-**Loading rule:** Use the **Read** tool to load every referenced file. Never guess or paraphrase module content from memory. If Read fails, tell the user the path you tried and ask them to confirm the skill is installed.
+| Layer | Name | Failures module | Patterns module |
+|-------|------|-----------------|-----------------|
+| 1 | Wallet Reliability | `reliability/wallet-failures.md` | — |
+| 2 | Transaction Reliability | `reliability/transaction-failures.md` | `patterns/transaction-recovery.md` |
+| 3 | State Reliability | `reliability/state-sync-failures.md` | `patterns/optimistic-ui.md`, `patterns/reconciliation-patterns.md` |
+| 4 | Realtime Reliability | `reliability/realtime-failures.md` | `patterns/hybrid-subscriptions.md` |
+| 5 | Infrastructure Reliability | `reliability/rpc-failures.md` | `patterns/rpc-failover.md` |
 
-**Example:** `reliability/wallet-failures.md` → Read `<skill-root>/reliability/wallet-failures.md`
+**Failures** teach diagnosis. **Patterns** teach prevention. Apply both.
+
+---
+
+## Path Resolution
+
+All paths are **relative to the directory containing this SKILL.md** (the skill root).
+
+**Loading rule:** Use the **Read** tool for every referenced file. Never guess content from memory.
 
 ---
 
 ## Startup Sequence
 
-On every invocation:
-
-1. **Read** `rules/reliability-rules.md` (agent behavior rules).
-2. Classify the user's request into one failure category (or match a slash command).
-3. **Read** only the module, playbook, or command file(s) listed for that category.
-4. Respond using the loaded content — cite the module's Problem → Diagnosis → Fix structure.
+1. **Read** `rules/reliability-rules.md`
+2. Classify request → layer, playbook, command, or readiness question
+3. **Read** only the files needed (see limits below)
+4. Respond using loaded content; cite Severity / Frequency / User Impact when discussing failures
+5. After fixing a failure, **Read** the layer's **pattern** doc to prevent recurrence
 
 **Hard limits:**
-- Do **not** read all modules in one turn.
-- Maximum **2 knowledge files** for a debug question (1 module + 1 playbook).
-- Maximum **3 knowledge files** for an audit command (command + checklist + 1 module as needed).
+- Debug: max **2** knowledge files (1 failure module + 1 playbook OR 1 pattern)
+- Audit: max **4** files (framework or command + score + checklist + 1 module)
+- Never load all modules in one turn
 
 ---
 
 ## When Intent Is Unclear
 
-If the question could map to multiple categories, ask **one** clarifying question before loading:
+Ask **one** clarifying question:
 
 | Ambiguous report | Ask |
 |------------------|-----|
-| "App is broken" | "Is it wallet connect, a stuck transaction, stale data, or everything failing to load?" |
-| "Balance is wrong" | "Is the balance wrong on-chain (explorer) too, or only in your UI?" |
-| "Nothing updates" | "Did a transaction complete, or is live data frozen with no recent tx?" |
-| "Transaction failed" | "Did the user reject in wallet, or did they sign and it failed/dropped on-chain?" |
-
-If the user cannot clarify, start with the most likely module, state your assumption, and offer to pivot.
+| "App is broken" | "Wallet, transaction, stale data, or everything failing to load?" |
+| "Balance is wrong" | "Wrong on explorer too, or only in your UI?" |
+| "Ready for mainnet?" | "Run production readiness checklist + reliability score" |
+| "Transaction failed" | "User rejected, or signed and failed/dropped on-chain?" |
 
 ---
 
-## Router — Modules
+## Router — Failures (diagnose)
 
-- **Wallet** — adapters, Phantom, Backpack, WalletConnect, reconnect loops, mobile  
+- **Layer 1 Wallet** — adapters, Phantom, reconnect, mobile  
   → `reliability/wallet-failures.md`
 
-- **Transaction** — expired blockhash, simulation failure, tx stuck, confirmation, priority fees, compute budget  
+- **Layer 2 Transaction** — blockhash, simulation, stuck tx, confirmation  
   → `reliability/transaction-failures.md`
 
-- **State sync** — stale balances, UI not updating, optimistic updates, cache drift, race conditions  
+- **Layer 3 State** — stale balances, optimistic UI, cache drift  
   → `reliability/state-sync-failures.md`
 
-- **Realtime** — websocket disconnects, subscriptions, dropped/duplicate events  
+- **Layer 4 Realtime** — websocket drops, subscriptions, silent freeze  
   → `reliability/realtime-failures.md`
 
-- **RPC** — rate limits, provider outages, retries, failover, health monitoring  
+- **Layer 5 Infrastructure** — RPC 429, outage, failover  
   → `reliability/rpc-failures.md`
 
-- **Kit migration** — web3.js → @solana/kit, legacy patterns  
-  → `migration/kit-migration.md`
-
-- **Anti-patterns** — what not to do in production  
-  → `anti-patterns/production-anti-patterns.md`
+- **Kit migration** → `migration/kit-migration.md`
+- **Anti-patterns** → `anti-patterns/production-anti-patterns.md`
 
 ---
 
-## Router — Playbooks (symptom → steps)
+## Router — Playbooks (recover)
 
-- Balance doesn't update after tx → `playbooks/stale-balances.md`
-- Transaction appears frozen → `playbooks/tx-stuck.md`
-- Realtime data stops updating silently → `playbooks/websocket-failure.md`
-- Wallet reconnect loop or session loss → `playbooks/wallet-reconnect.md`
-- RPC degraded or down → `playbooks/rpc-outage.md`
+- Stale balance after tx → `playbooks/stale-balances.md`
+- Transaction frozen → `playbooks/tx-stuck.md`
+- Live data stopped → `playbooks/websocket-failure.md`
+- Wallet reconnect loop → `playbooks/wallet-reconnect.md`
+- RPC outage → `playbooks/rpc-outage.md`
 
-When a user reports a **specific symptom**, prefer the playbook first, then Read the linked module from the playbook's "Related Modules" section if deeper context is needed.
+Prefer playbook first for specific symptoms; then Read linked failure module.
 
 ---
 
-## Router — Commands (audits)
+## Router — Patterns (prevent)
 
-- `/reliability-audit` → `commands/reliability-audit.md` then `audits/reliability-checklist.md`
-- `/tx-flow-audit` → `commands/tx-flow-audit.md` then `reliability/transaction-failures.md`
-- `/frontend-health-check` → `commands/frontend-health-check.md`
-- `/migrate-to-kit` → `commands/migrate-to-kit.md` then `migration/kit-migration.md`
+- Optimistic UI done right → `patterns/optimistic-ui.md`
+- Keep UI synced with chain → `patterns/reconciliation-patterns.md`
+- Websocket + RPC hybrid → `patterns/hybrid-subscriptions.md`
+- Multi-RPC survival → `patterns/rpc-failover.md`
+- Tx state machine + recovery → `patterns/transaction-recovery.md`
+
+---
+
+## Router — Audits & Scoring
+
+- `/reliability-audit` → `commands/reliability-audit.md` → `audits/reliability-score.md` → `audits/production-readiness-checklist.md`
+- `/tx-flow-audit` → `commands/tx-flow-audit.md` → `patterns/transaction-recovery.md`
+- `/frontend-health-check` → `commands/frontend-health-check.md` → `framework/reliability-framework.md`
+- `/migrate-to-kit` → `commands/migrate-to-kit.md` → `migration/kit-migration.md`
+- **"Is my dApp mainnet ready?"** → `audits/production-readiness-checklist.md` + `audits/reliability-score.md`
 
 ---
 
 ## Response Pattern
 
-When diagnosing or auditing:
-
-1. **Identify the failure category** (wallet, transaction, state, realtime, RPC).
-2. **Read** the matching module or playbook — do not rely on general Solana knowledge alone.
-3. **Follow the module structure:** Problem → Symptoms → Causes → Diagnosis → Fix → Prevention.
-4. **State tradeoffs** — devnet success ≠ production readiness.
-5. **Recommend fallbacks** — never propose a single point of failure without an alternative.
-
-For audit commands, score each category using the framework in `audits/reliability-checklist.md` and return recommendations ranked by **user impact**.
-
----
-
-## Quick Category Cheatsheet
-
-```
-Wallet won't connect / reconnect loop     → reliability/wallet-failures.md
-Tx stuck / expired / simulation fail      → reliability/transaction-failures.md + playbooks/tx-stuck.md
-Balance stale / optimistic UI wrong       → reliability/state-sync-failures.md + playbooks/stale-balances.md
-Live data frozen / websocket dead         → reliability/realtime-failures.md + playbooks/websocket-failure.md
-429 / RPC down / slow reads               → reliability/rpc-failures.md + playbooks/rpc-outage.md
-Pre-mainnet review                        → commands/reliability-audit.md
-web3.js → Kit                             → commands/migrate-to-kit.md
-```
+1. Name the **layer** (1–5)
+2. State **Severity / Frequency / User Impact** from the failure module
+3. Diagnose → Fix → Prevention
+4. Recommend the **pattern** that prevents recurrence
+5. For audits: return five layer scores + overall + readiness verdict
+6. Devnet success ≠ mainnet readiness — say so explicitly

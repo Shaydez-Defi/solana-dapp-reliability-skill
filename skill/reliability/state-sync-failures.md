@@ -1,12 +1,17 @@
 # State Sync Failures
 
-Why UI state drifts from on-chain truth — the most common production complaint.
+**Layer 3 — State Reliability**
+
+Why UI state drifts from on-chain truth — the most common production complaint.  
+**Patterns:** `patterns/optimistic-ui.md`, `patterns/reconciliation-patterns.md`
 
 ---
 
 ## Problem: Stale Balances After Transaction
 
-**Severity:** High — #1 user complaint after swaps and deposits.
+**Severity:** High  
+**Frequency:** Very Common  
+**User Impact:** High — #1 user complaint after swaps and deposits.
 
 ### Symptoms
 - User completes swap/deposit; balance unchanged for seconds or minutes.
@@ -39,7 +44,9 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ## Problem: Optimistic Update Never Reconciled
 
-**Severity:** Critical — UI shows success when tx failed; ghost balances.
+**Severity:** Critical  
+**Frequency:** Common  
+**User Impact:** Critical — UI shows success when tx failed; ghost balances.
 
 ### Symptoms
 - UI shows success state; on-chain tx actually failed.
@@ -70,7 +77,9 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ## Problem: Race Conditions on Rapid Actions
 
-**Severity:** High — wrong balances and failed txs on rapid clicks.
+**Severity:** High  
+**Frequency:** Occasional  
+**User Impact:** High — wrong balances and failed txs on rapid clicks.
 
 ### Symptoms
 - Two quick clicks produce wrong final balance.
@@ -101,7 +110,9 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ## Problem: Cache Inconsistency Across Components
 
-**Severity:** Medium — confusing UX; different pages show different numbers.
+**Severity:** Medium  
+**Frequency:** Common  
+**User Impact:** Medium — confusing UX; different pages show different numbers.
 
 ### Symptoms
 - Header shows balance X; portfolio page shows Y.
@@ -132,7 +143,9 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ## Problem: Delayed Indexing
 
-**Severity:** High — correct on-chain, wrong in app for 30–60s after tx.
+**Severity:** High  
+**Frequency:** Common (indexer apps)  
+**User Impact:** High — correct on-chain, wrong in app for 30–60s after tx.
 
 ### Symptoms
 - RPC shows correct state; app via indexer does not.
@@ -163,7 +176,9 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ## Problem: Account Update Ordering
 
-**Severity:** Medium — UI flicker; usually self-corrects on refresh.
+**Severity:** Medium  
+**Frequency:** Occasional  
+**User Impact:** Medium — UI flicker; usually self-corrects on refresh.
 
 ### Symptoms
 - Events arrive out of order; UI flickers.
