@@ -52,7 +52,7 @@ Developers stop at *"the feature works."* Production teams ask *"what happens wh
 ### Quick install (project-scoped)
 
 ```bash
-git clone https://github.com/shaydez-defi/solana-dapp-reliability-skill.git
+git clone https://github.com/Shaydez-Defi/solana-dapp-reliability-skill.git
 cd solana-dapp-reliability-skill
 chmod +x install.sh
 ./install.sh
@@ -222,7 +222,7 @@ MIT — see [LICENSE](LICENSE).
 
 ---
 
-Built by [Shaydez-Defi](https://github.com/shaydez-defi) for Solana builders who ship to production, not just devnet.
+Built by [Shaydez-Defi](https://github.com/Shaydez-Defi) for Solana builders who ship to production, not just devnet.
 
 ---
 
