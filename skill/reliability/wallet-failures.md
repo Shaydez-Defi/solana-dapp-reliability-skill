@@ -6,6 +6,8 @@ Everything that causes wallet UX to fail in production.
 
 ## Problem: Wallet Shows Connected But Cannot Sign
 
+**Severity:** Critical — blocks all transactions; user sees connected UI but cannot sign.
+
 ### Symptoms
 - UI displays connected address; sign/send buttons do nothing or hang.
 - `publicKey` is set but `signTransaction` never resolves.
@@ -39,6 +41,8 @@ Everything that causes wallet UX to fail in production.
 
 ## Problem: Reconnect Loop
 
+**Severity:** Critical — user cannot complete any transaction; connect flow is broken.
+
 ### Symptoms
 - Wallet connects, immediately disconnects, repeats indefinitely.
 - Console spam: connect/disconnect events.
@@ -70,6 +74,8 @@ Everything that causes wallet UX to fail in production.
 ---
 
 ## Problem: Mobile Wallet Deep-Link Failures
+
+**Severity:** High — blocks mobile users from connecting; desktop may work fine.
 
 ### Symptoms
 - User taps Connect; wallet app opens but dApp never receives approval.
@@ -103,6 +109,8 @@ Everything that causes wallet UX to fail in production.
 
 ## Problem: Multi-Wallet Conflicts
 
+**Severity:** High — wrong signer or stale balances; can cause failed txs or user distrust.
+
 ### Symptoms
 - Wrong wallet signs the transaction.
 - Balance from wallet A shown while wallet B is "connected".
@@ -131,6 +139,8 @@ Everything that causes wallet UX to fail in production.
 ---
 
 ## Problem: Session Persistence Across Refresh
+
+**Severity:** Medium — annoying reconnect friction; does not block txs once connected.
 
 ### Symptoms
 - User must reconnect on every page load.
