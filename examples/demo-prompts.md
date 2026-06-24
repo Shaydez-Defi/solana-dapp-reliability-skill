@@ -9,8 +9,8 @@ Copy-paste these to demonstrate the skill in action.
 ```
 /reliability-audit
 
-Review my Solana dApp for production reliability before mainnet launch.
-Score wallet, transaction, state sync, realtime, RPC, and failure recovery.
+Is my dApp ready for mainnet users?
+Score all five reliability layers and run the production readiness checklist.
 ```
 
 ## Debug stale balance
