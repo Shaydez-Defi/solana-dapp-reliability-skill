@@ -6,6 +6,8 @@ Websocket drops, subscription leaks, and silent data staleness.
 
 ## Problem: Silent Websocket Disconnect
 
+**Severity:** High — data frozen with no error; users think the app is dead.
+
 ### Symptoms
 - UI looks live but data frozen for minutes.
 - No error shown; users assume protocol is inactive.
@@ -36,6 +38,8 @@ Websocket drops, subscription leaks, and silent data staleness.
 
 ## Problem: Dropped Events
 
+**Severity:** High — missed position/balance updates during active trading.
+
 ### Symptoms
 - Missed account updates during high activity.
 - Gaps in slot progression for subscribed accounts.
@@ -63,6 +67,8 @@ Websocket drops, subscription leaks, and silent data staleness.
 ---
 
 ## Problem: Duplicate Events
+
+**Severity:** Medium — UI flicker and wrong counters; rarely causes fund loss.
 
 ### Symptoms
 - Balance flickers between two values.
@@ -92,6 +98,8 @@ Websocket drops, subscription leaks, and silent data staleness.
 
 ## Problem: Memory Leaks From Subscriptions
 
+**Severity:** Medium — degrades performance over long sessions; not immediate.
+
 ### Symptoms
 - Tab slows after 30+ minutes.
 - Memory grows with navigation.
@@ -119,6 +127,8 @@ Websocket drops, subscription leaks, and silent data staleness.
 ---
 
 ## Problem: Reconnection Storm
+
+**Severity:** Critical — triggers RPC bans; makes outage worse than the original failure.
 
 ### Symptoms
 - Hundreds of reconnect attempts per minute.

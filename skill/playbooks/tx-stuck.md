@@ -2,6 +2,8 @@
 
 **User report:** "My transaction is frozen" / spinner never stops.
 
+**Severity:** High — user assumes funds lost; often a UI/confirmation bug, not an on-chain failure.
+
 ---
 
 ## Investigation

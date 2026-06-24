@@ -2,6 +2,8 @@
 
 **User report:** "Wallet keeps disconnecting" / "Can't connect my wallet."
 
+**Severity:** Critical — blocks all on-chain actions until resolved.
+
 ---
 
 ## Investigation

@@ -6,6 +6,8 @@ Rate limits, provider degradation, and outage survival.
 
 ## Problem: Rate Limiting (HTTP 429)
 
+**Severity:** High — partial outages; worse during traffic spikes and airdrops.
+
 ### Symptoms
 - Intermittent `429 Too Many Requests`.
 - Some users see data; others get errors.
@@ -37,6 +39,8 @@ Rate limits, provider degradation, and outage survival.
 ---
 
 ## Problem: Provider Degradation
+
+**Severity:** High — slow txs and timeouts without clear error messages.
 
 ### Symptoms
 - Slow responses (2–10s) without hard errors.
@@ -70,6 +74,8 @@ Rate limits, provider degradation, and outage survival.
 
 ## Problem: Hard Outage
 
+**Severity:** Critical — all reads and writes fail; dApp is down.
+
 ### Symptoms
 - All RPC calls fail: connection refused, 503, DNS errors.
 - Entire app non-functional.
@@ -101,6 +107,8 @@ Rate limits, provider degradation, and outage survival.
 
 ## Problem: Retry Amplification
 
+**Severity:** High — turns brief blips into extended bans and cost spikes.
+
 ### Symptoms
 - Brief outage becomes prolonged ban.
 - RPC costs spike.
@@ -129,6 +137,8 @@ Rate limits, provider degradation, and outage survival.
 ---
 
 ## Problem: Stale or Forked RPC Data
+
+**Severity:** High — wrong account data and rejected transactions across providers.
 
 ### Symptoms
 - Account data differs between refresh and websocket.

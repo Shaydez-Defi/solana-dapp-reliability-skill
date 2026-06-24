@@ -2,6 +2,8 @@
 
 **User report:** "Data stopped updating" / "App feels frozen but no error."
 
+**Severity:** High — silent failure; users blame the protocol, not the connection.
+
 ---
 
 ## Investigation

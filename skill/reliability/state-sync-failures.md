@@ -6,6 +6,8 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ## Problem: Stale Balances After Transaction
 
+**Severity:** High — #1 user complaint after swaps and deposits.
+
 ### Symptoms
 - User completes swap/deposit; balance unchanged for seconds or minutes.
 - Refresh fixes it; users blame the app.
@@ -37,6 +39,8 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ## Problem: Optimistic Update Never Reconciled
 
+**Severity:** Critical — UI shows success when tx failed; ghost balances.
+
 ### Symptoms
 - UI shows success state; on-chain tx actually failed.
 - Balance inflated until page refresh.
@@ -65,6 +69,8 @@ Why UI state drifts from on-chain truth — the most common production complaint
 ---
 
 ## Problem: Race Conditions on Rapid Actions
+
+**Severity:** High — wrong balances and failed txs on rapid clicks.
 
 ### Symptoms
 - Two quick clicks produce wrong final balance.
@@ -95,6 +101,8 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ## Problem: Cache Inconsistency Across Components
 
+**Severity:** Medium — confusing UX; different pages show different numbers.
+
 ### Symptoms
 - Header shows balance X; portfolio page shows Y.
 - NFT count differs between gallery and profile.
@@ -124,6 +132,8 @@ Why UI state drifts from on-chain truth — the most common production complaint
 
 ## Problem: Delayed Indexing
 
+**Severity:** High — correct on-chain, wrong in app for 30–60s after tx.
+
 ### Symptoms
 - RPC shows correct state; app via indexer does not.
 - New token accounts missing for 30–60s.
@@ -152,6 +162,8 @@ Why UI state drifts from on-chain truth — the most common production complaint
 ---
 
 ## Problem: Account Update Ordering
+
+**Severity:** Medium — UI flicker; usually self-corrects on refresh.
 
 ### Symptoms
 - Events arrive out of order; UI flickers.
