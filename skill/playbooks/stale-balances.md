@@ -1,66 +1,50 @@
-# Playbook: Stale Balances
+# Playbook: Stale Balance
 
-**User report:** "I swapped/deposited but my balance didn't update."
+**Layer 3 — State Reliability**
 
-**Severity:** High  
-**Frequency:** Very Common  
-**User Impact:** High — most common post-tx complaint; erodes trust even when funds are safe.
+**Severity:** High | **Frequency:** Very Common | **User Impact:** High
 
 ---
 
-## Investigation (5 minutes)
+## Symptoms
 
-1. **Confirm on-chain state**
-   - `getTokenAccountsByOwner` / `getBalance` via RPC for the user's pubkey.
-   - Check Solscan/SolanaFM for the recent transaction.
-   - If chain is correct but UI is wrong → state sync issue, not tx failure.
+- User swapped/deposited; balance unchanged for seconds or minutes
+- Refresh fixes it; user blames the app
+- Explorer shows correct balance; UI does not
 
-2. **Trace the UI data path**
-   - Where does the balance component read from? (React Query, SWR, Zustand, direct RPC?)
-   - What cache key? Is it scoped to `pubkey` + `mint`?
-   - What TTL / staleTime?
+## Likely Causes
 
-3. **Trace post-transaction flow**
-   - What runs on tx success? Invalidation? Optimistic update? Nothing?
-   - Which commitment level triggers the update? (`processed` / `confirmed` / `finalized`)
+- No cache invalidation after tx `confirmed`
+- Waiting for `finalized` before refetch
+- Indexer lag behind RPC
+- Optimistic update never reconciled
+- Cache key missing `pubkey` or `mint`
+- Websocket stopped; polling only and stale
 
-4. **Check for indexer lag**
-   - If UI reads from indexer API, compare indexer vs RPC.
-   - Recent tx + indexer 404 or old value = indexer lag.
+## Verification Steps
 
-5. **Check for race**
-   - Did user trigger another action before first refetch completed?
-   - Are multiple components fetching with different cache keys?
+1. RPC `getBalance` / `getTokenAccountsByOwner` — is chain correct?
+2. Compare UI source: React Query? SWR? Indexer API?
+3. Trace post-tx: what runs on success? Which commitment level?
+4. Indexer vs RPC side-by-side if using indexer
+5. Check websocket last message age if realtime-driven
 
----
-
-## Fix (immediate)
+## Fixes
 
 | Finding | Action |
 |---------|--------|
-| No invalidation on tx success | Add `invalidateQueries` for `['balance', pubkey, mint]` on `confirmed` |
-| Optimistic update without rollback | Reconcile from RPC within 2s; rollback on mismatch |
-| Indexer lag | Fallback to RPC for 60s after any tx |
-| Wrong commitment | Use `confirmed` for UI update, not `finalized` |
-| Cache key missing pubkey | Namespace all wallet data by pubkey |
-| Stale websocket only | Force RPC snapshot; restart subscription |
+| No invalidation | `invalidateQueries(['balance', pubkey, mint])` on `confirmed` |
+| Wrong commitment | Use `confirmed` for UI, not `finalized` |
+| Indexer lag | RPC fallback for 60s after any tx |
+| No reconcile | RPC poll within 2s; rollback optimistic on mismatch |
+| Stale websocket | Force RPC snapshot; reconnect subscription |
 
-**Quick user unblock:** Add manual refresh that busts cache and refetches from RPC.
-
----
+**Quick unblock:** manual refresh that busts cache.
 
 ## Prevention
 
-- **Pattern:** optimistic delta → confirm at `confirmed` → RPC reconcile → periodic reconciliation loop.
-- **Reconciliation loop:** every 15–30s, diff critical balances against RPC for active wallet.
-- **UX:** show "updating…" during reconciliation; never show stale as final without indicator.
-- **Metrics:** track `balance_lag_seconds` (time from tx confirmed to UI correct).
-- **Tests:** swap on mainnet → balance updates within 3s without refresh.
+- Optimistic delta → confirm → RPC reconcile → periodic reconcile loop (15–30s)
+- Metric: `balance_lag_seconds`
+- Test: mainnet swap → UI correct within 3s without refresh
 
----
-
-## Related Modules
-
-- `reliability/state-sync-failures.md`
-- `reliability/transaction-failures.md` (if tx actually failed)
-- `reliability/realtime-failures.md` (if websocket stopped updating)
+**Module:** `reliability/state-sync-failures.md`

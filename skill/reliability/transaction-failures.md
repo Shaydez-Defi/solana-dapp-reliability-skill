@@ -3,7 +3,7 @@
 **Layer 2 — Transaction Reliability**
 
 How transactions break in production and how to recover.  
-**Pattern:** `patterns/transaction-recovery.md`
+**Playbook:** `playbooks/tx-stuck.md`
 
 ---
 

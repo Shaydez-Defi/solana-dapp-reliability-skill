@@ -1,87 +1,48 @@
 # Playbook: RPC Outage
 
-**User report:** "Nothing loads" / "All transactions fail" / app-wide failure.
+**Layer 5 — Infrastructure Reliability**
 
-**Severity:** Critical  
-**Frequency:** Occasional  
-**User Impact:** Critical — entire dApp non-functional for all users.
+**Severity:** Critical | **Frequency:** Occasional | **User Impact:** Critical
 
 ---
 
-## Investigation (2 minutes)
+## Symptoms
 
-1. **Scope the failure**
-   - Reads failing, writes failing, or both?
-   - All users or one region?
-   - Wallet still connects? (isolates RPC from wallet layer)
+- Nothing loads; all txs fail
+- 429 errors or connection refused
+- Wallet still connects but reads/writes fail
 
-2. **Test endpoints**
-   - `getHealth` / `getSlot` on primary provider.
-   - Same call on backup provider.
-   - `curl` from server if client-side works but server fails.
+## Likely Causes
 
-3. **Check operational causes**
-   - API key revoked / quota exceeded?
-   - Wrong env var in production deploy?
-   - Provider status page incident?
-   - 429 rate limit masquerading as outage?
+- Provider incident or API key revoked
+- Public RPC rate limited
+- Wrong env var in production
+- Retry storm making outage worse
+- Single provider — no failover
 
-4. **Check client behavior**
-   - Retry storm making things worse?
-   - All components sharing one broken endpoint?
+## Verification Steps
 
----
+1. Scope: reads only, writes only, or both?
+2. `getSlot` on primary vs secondary provider
+3. Provider status page / 429 in network tab?
+4. `curl` endpoint from server and client
+5. Check retry loops amplifying traffic
 
-## Fallback Procedures
+## Fixes
 
-### Immediate (ops)
-1. Switch primary → secondary provider in config / env.
-2. Deploy or toggle feature flag if using runtime provider config.
-3. Enable read-only degraded mode if writes can't fail over cleanly.
-
-### Immediate (user-facing)
-1. Banner: "Network connectivity issues — some features may be slow."
-2. Preserve user input; don't clear forms on RPC errors.
-3. Queue retry for failed reads with backoff — don't spam.
-
-### If both providers down
-1. Show cached data with staleness timestamp (if available).
-2. Disable write actions with clear explanation.
-3. Link to status page / Discord for updates.
-
----
-
-## Multi-RPC Strategy
-
-```
-Primary (sends + reads) ──▶ unhealthy? ──▶ Secondary
-                              │
-                              ▼
-                         both unhealthy?
-                              │
-                              ▼
-                    Degraded mode (cache + polling + banner)
-```
-
-### Config checklist
-- [ ] Two independent providers (different infra vendors ideal)
-- [ ] Env vars for all endpoints — nothing hardcoded
-- [ ] Health check loop (slot lag + latency)
-- [ ] Circuit breaker after N consecutive failures
-- [ ] Automatic cache invalidation on provider switch
-
----
+| Action | When |
+|--------|------|
+| Failover to secondary provider | Primary unhealthy |
+| Degraded mode banner | Both slow but partially up |
+| Stop retry storm | Circuit breaker + backoff |
+| Read-only mode | Writes can't fail over safely |
+| Queue writes with user consent | Extended outage |
 
 ## Prevention
 
-- Never use public mainnet RPC in production.
-- Monitor p95 latency and error rate per provider.
-- Run game-day drill: disable primary, verify failover < 30s.
-- See `reliability/rpc-failures.md`.
+- Minimum 2 independent RPC providers from day one
+- Never use public mainnet RPC in production
+- Health check: slot lag + p95 latency every 10–30s
+- Game-day drill: kill primary, verify failover <30s
 
----
-
-## Related Modules
-
-- `reliability/transaction-failures.md` (if only sends fail)
-- `reliability/realtime-failures.md` (if only websocket fails)
+**Module:** `reliability/rpc-failures.md`

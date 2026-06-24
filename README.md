@@ -1,15 +1,11 @@
 # solana-dapp-reliability-skill
 
-# Production Reliability Engineering for Solana dApps
+This skill teaches AI agents how to **diagnose, prevent, and recover** from the failures that make Solana dApps unreliable in production.
 
-**A five-layer reliability framework AI agents apply to diagnose failures, score readiness, and implement prevention patterns.**
+The official Solana dev skill teaches how to build. **This skill teaches how to survive reality.**
 
-Most Solana skills teach how to build. Official kits cover wallets, transactions, testing, security, and @solana/kit. **None own production failure recovery and reliability engineering.**
-
-This skill fills that gap.
-
-> **This is NOT** a Solana tutorial or frontend troubleshooting guide.  
-> **This IS** The Reliability Framework — failures teach diagnosis, patterns teach prevention.
+> **Not:** how to build a Solana dApp (wallets, txs, React, @solana/kit — official skill owns that)  
+> **Yes:** diagnose and recover from production failures using **The DApp Reliability Framework**
 
 ## The Reliability Framework
 
@@ -25,11 +21,10 @@ This skill fills that gap.
 
 ## What It Does
 
-- Diagnoses wallet, transaction, state sync, realtime, and RPC failures
-- Provides step-by-step playbooks for the most common production incidents
-- Audits codebases with a Reliability Score Framework
-- Guides web3.js → @solana/kit migration without big-bang rewrites
-- Calls out production anti-patterns with opinionated alternatives
+- **5-layer Reliability Framework** — classify any production issue
+- **5 battle-tested playbooks** — stale balance, stuck tx, can't sign, websocket, RPC outage
+- **Production Readiness Checklist** — 10-item founder-friendly mainnet gate
+- Failure modules for deep diagnosis (wallet, tx, state, realtime, infrastructure)
 
 ---
 
@@ -93,44 +88,37 @@ your-dapp/.grok/skills/solana-dapp-reliability/SKILL.md
 ## Example Use Cases
 
 **Debug a stale balance:**
-> "User swapped USDC but balance didn't update for 2 minutes."
+> "User swapped USDC but balance didn't update for 2 minutes." → `playbooks/stale-balances.md`
 
 **Audit before mainnet launch:**
-> `/reliability-audit` — score wallet, tx, state, realtime, RPC, and recovery.
+> `/reliability-audit` — five-layer scores + 10-item production readiness checklist.
 
 **Fix websocket silence:**
-> "Realtime prices stopped updating but no error in the UI."
+> "Realtime prices stopped updating but no error in the UI." → `playbooks/websocket-failure.md`
 
 **Plan a Kit migration:**
-> `/migrate-to-kit` — phased migration from web3.js without breaking production.
+> "Safest phased web3.js → @solana/kit migration" → `migration/kit-migration.md`
 
 ---
 
-## Commands
+## Production Readiness Checklist
 
-| Command | Purpose |
-|---------|---------|
-| `/reliability-audit` | Full codebase reliability review with scores |
-| `/tx-flow-audit` | End-to-end transaction pipeline inspection |
-| `/frontend-health-check` | Architecture strengths, weaknesses, concerns |
-| `/migrate-to-kit` | web3.js → @solana/kit migration analysis |
-
----
-
-## Reliability Score Example
-
-See `skill/audits/reliability-score.md` for full methodology.
+See `skill/production-readiness-checklist.md` for the full 10-item gate.
 
 ```
-Wallet Reliability:          84/100
-Transaction Reliability:     72/100
-State Reliability:           58/100
-Realtime Reliability:        67/100
-Infrastructure Reliability:  91/100
-────────────────────────────────────
-Overall Reliability:         74/100
-Mainnet Readiness:           28/35 checklist items — Soft launch OK
+[ ] Wallet recovery tested
+[ ] Mobile wallet tested
+[ ] RPC failover configured
+[ ] WebSocket recovery configured
+[ ] Optimistic updates reconciled
+[ ] Retry logic exists
+[ ] Rate limits handled
+[ ] Transaction failure UX exists
+[ ] Indexer lag handled
+[ ] State reconciliation implemented
 ```
+
+**Verdict:** 9–10 = mainnet ready · 7–8 = soft launch · <5 = not ready
 
 ---
 
@@ -144,43 +132,26 @@ solana-dapp-reliability-skill/
 ├── validate.sh
 ├── SUBMISSION.md
 ├── examples/
-└── skill/                          # Skill root — all paths in SKILL.md are relative here
-    ├── SKILL.md                    # Framework router
-    ├── framework/
-    │   └── reliability-framework.md
-    ├── patterns/
-    │   ├── optimistic-ui.md
-    │   ├── reconciliation-patterns.md
-    │   ├── hybrid-subscriptions.md
-    │   ├── rpc-failover.md
-    │   └── transaction-recovery.md
+└── skill/
+    ├── SKILL.md
+    ├── reliability-framework.md          # Load first for audits
+    ├── production-readiness-checklist.md # 10-item mainnet gate
     ├── reliability/
     │   ├── wallet-failures.md
     │   ├── transaction-failures.md
     │   ├── state-sync-failures.md
     │   ├── realtime-failures.md
     │   └── rpc-failures.md
-    ├── playbooks/
+    ├── playbooks/                        # First-class — load before modules
     │   ├── stale-balances.md
     │   ├── tx-stuck.md
+    │   ├── wallet-cannot-sign.md
     │   ├── websocket-failure.md
-    │   ├── wallet-reconnect.md
     │   └── rpc-outage.md
     ├── migration/
     │   └── kit-migration.md
-    ├── anti-patterns/
-    │   └── production-anti-patterns.md
-    ├── audits/
-    │   ├── reliability-score.md
-    │   ├── production-readiness-checklist.md
-    │   └── reliability-checklist.md
-    ├── commands/
-    │   ├── reliability-audit.md
-    │   ├── tx-flow-audit.md
-    │   ├── frontend-health-check.md
-    │   └── migrate-to-kit.md
-    └── rules/
-        └── reliability-rules.md
+    └── anti-patterns/
+        └── production-anti-patterns.md
 ```
 
 ---
@@ -199,9 +170,9 @@ solana-dapp-reliability-skill/
 
 Contributions welcome. Focus areas:
 
-- New failure modes with Problem → Symptoms → Diagnosis → Fix → Prevention structure
-- Additional playbooks for common incidents
-- Mainnet-tested patterns (not devnet-only assumptions)
+- New failure modes with Severity / Frequency / User Impact
+- Additional playbooks (Symptoms → Causes → Verification → Fixes → Prevention)
+- Mainnet-tested recovery steps (not devnet-only assumptions)
 
 Open a PR with a clear description of the failure scenario and production evidence.
 

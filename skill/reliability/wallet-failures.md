@@ -2,9 +2,10 @@
 
 **Layer 1 — Wallet Reliability**
 
-Everything that causes wallet UX to fail in production.
+Everything that causes wallet UX to fail in production.  
+**Playbook:** `playbooks/wallet-cannot-sign.md`
 
-Each failure includes **Severity**, **Frequency**, and **User Impact** to prioritize fixes.
+Each failure includes **Severity**, **Frequency**, and **User Impact**.
 
 ---
 

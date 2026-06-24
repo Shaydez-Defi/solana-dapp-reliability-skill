@@ -17,11 +17,6 @@ Options:
   --cursor         Also install to ~/.cursor/skills/
   --claude         Also install to ~/.claude/skills/
   --help, -h       Show this help
-
-Examples:
-  ./install.sh                  # Install in current project
-  ./install.sh --global         # Install for all projects
-  ./install.sh -g --cursor      # Global + Cursor compatibility
 EOF
 }
 
@@ -46,11 +41,11 @@ install_skill() {
 
   mkdir -p "${target_dir}"
 
-  # SKILL.md router
   cp "${REPO_DIR}/skill/SKILL.md" "${target_dir}/SKILL.md"
+  cp "${REPO_DIR}/skill/reliability-framework.md" "${target_dir}/reliability-framework.md"
+  cp "${REPO_DIR}/skill/production-readiness-checklist.md" "${target_dir}/production-readiness-checklist.md"
 
-  # Knowledge modules
-  for subdir in framework reliability playbooks patterns migration anti-patterns audits commands rules; do
+  for subdir in reliability playbooks migration anti-patterns; do
     if [[ -d "${REPO_DIR}/skill/${subdir}" ]]; then
       mkdir -p "${target_dir}/${subdir}"
       cp -r "${REPO_DIR}/skill/${subdir}/." "${target_dir}/${subdir}/"
@@ -60,31 +55,16 @@ install_skill() {
   echo "✓ Installed to ${target_dir}"
 }
 
-# Primary install
 if [[ "${SCOPE}" == "global" ]]; then
   install_skill "${HOME}/.grok/skills"
 else
   install_skill "$(pwd)/.grok/skills"
 fi
 
-# Optional compatibility installs
-if [[ "${INSTALL_CURSOR}" == true ]]; then
-  install_skill "${HOME}/.cursor/skills"
-fi
-
-if [[ "${INSTALL_CLAUDE}" == true ]]; then
-  install_skill "${HOME}/.claude/skills"
-fi
+[[ "${INSTALL_CURSOR}" == true ]] && install_skill "${HOME}/.cursor/skills"
+[[ "${INSTALL_CLAUDE}" == true ]] && install_skill "${HOME}/.claude/skills"
 
 echo ""
 echo "Solana dApp Reliability skill installed."
-echo ""
-echo "Usage:"
-echo "  /solana-dapp-reliability     Run the skill"
-echo "  /reliability-audit           Audit codebase reliability"
-echo "  /tx-flow-audit               Audit transaction pipeline"
-echo "  /frontend-health-check       Review frontend architecture"
-echo "  /migrate-to-kit              web3.js → @solana/kit guidance"
-echo ""
-echo "The skill auto-invokes when you ask about Solana dApp failures,"
-echo "stale balances, wallet issues, RPC outages, or production reliability."
+echo "  /reliability-audit  — production readiness review"
+echo "  Playbooks load first for: stale balance, stuck tx, can't sign, websocket, RPC outage"

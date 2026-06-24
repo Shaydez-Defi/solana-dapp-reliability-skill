@@ -2,36 +2,48 @@
 
 **Target:** [solana-foundation/templates — web3js-react-vite-tailwind-counter](https://github.com/solana-foundation/templates/tree/main/web3js/web3js-react-vite-tailwind-counter)
 
-**Command run:** `/reliability-audit`
+**Trigger:** `/reliability-audit` or "Is this dApp ready for mainnet users?"
 
-**Framework applied:** The Reliability Framework (5 layers) + Production Readiness Checklist
+**Framework applied:** The DApp Reliability Framework (5 layers) + Production Readiness Checklist (10 items)
 
 **Why this target:** Official Solana starter template — widely forked by hackathon teams. Auditing it shows how the framework catches gaps that pass devnet QA but fail in production.
 
 ---
 
-## Reliability Score: web3js-react-vite-tailwind-counter
+## Mainnet Readiness: web3js-react-vite-tailwind-counter
+
+**Checklist:** 2/10 passed  
+**Overall:** 55/100  
+**Verdict:** Not ready — fragile for mainnet users at scale. OK for devnet/hackathon prototype only.
 
 | Layer | Score | Top Issue |
 |-------|-------|-----------|
 | 1 — Wallet Reliability | 62/100 | Empty `wallets={[]}` — no adapters registered |
 | 2 — Transaction Reliability | 58/100 | No simulation; errors swallowed silently |
-| 3 — State Reliability | 71/100 | Refetch-on-success only; no reconciliation pattern |
+| 3 — State Reliability | 71/100 | Refetch-on-success only; no reconciliation |
 | 4 — Realtime Reliability | 35/100 | Zero websocket subscriptions |
 | 5 — Infrastructure Reliability | 48/100 | Single public RPC; no failover |
-| **Overall** | **55/100** | **Fragile — not mainnet-ready** |
 
-## Mainnet Readiness Checklist
+### Checklist Results
 
-**18/35 items passed (51%)**  
-**Verdict:** Not ready for mainnet users at scale. OK for devnet/hackathon prototype only.
+| Item | Status |
+|------|--------|
+| Wallet recovery tested | ❌ No adapters to test |
+| Mobile wallet tested | ❌ |
+| RPC failover configured | ❌ Single devnet RPC |
+| WebSocket recovery configured | ❌ No subscriptions |
+| Optimistic updates reconciled | ⚠️ N/A — no optimistic UI |
+| Retry logic exists | ❌ |
+| Rate limits handled | ❌ Public RPC only |
+| Transaction failure UX exists | ❌ Errors swallowed |
+| Indexer lag handled | ❌ |
+| State reconciliation implemented | ❌ Refetch-on-success only |
 
-### Blockers
-- [ ] Wallet adapters registered
-- [ ] `simulateTransaction` before sign
-- [ ] RPC failover configured
-- [ ] Websocket reconnect strategy
-- [ ] Optimistic updates reconciled (N/A yet — but no reconciliation loop either)
+### Blockers (fix first)
+
+1. Register wallet adapters (Layer 1) → `playbooks/wallet-cannot-sign.md`
+2. Fix silent tx error handling (Layer 2) → `playbooks/tx-stuck.md`
+3. Add RPC failover (Layer 5) → `playbooks/rpc-outage.md`
 
 ---
 
@@ -50,7 +62,7 @@
 No wallet adapters registered. Users cannot connect in a stock clone.
 
 **Fix:** Register `PhantomWalletAdapter`, `SolflareWalletAdapter`, etc.  
-**Playbook:** `playbooks/wallet-reconnect.md`
+**Playbook:** `playbooks/wallet-cannot-sign.md`
 
 ---
 
@@ -70,7 +82,7 @@ No wallet adapters registered. Users cannot connect in a stock clone.
 `onSuccess` still invalidates queries — UI may refresh as if tx worked.
 
 **Fix:** Re-throw or use `onError`. Never invalidate on failed sends.  
-**Pattern:** `patterns/transaction-recovery.md`
+**Playbook:** `playbooks/tx-stuck.md`
 
 ---
 
@@ -80,7 +92,7 @@ No wallet adapters registered. Users cannot connect in a stock clone.
 
 Flow: build → `sendTransaction` → `confirmTransaction`. No `simulateTransaction`.
 
-**Pattern:** `patterns/transaction-recovery.md` (pre-flight simulation)
+**Playbook:** `playbooks/tx-stuck.md` (pre-flight simulation step)
 
 ---
 
@@ -90,7 +102,6 @@ Flow: build → `sendTransaction` → `confirmTransaction`. No `simulateTransact
 
 Default: `clusterApiUrl('devnet')`. No secondary provider, health check, or failover.
 
-**Pattern:** `patterns/rpc-failover.md`  
 **Playbook:** `playbooks/rpc-outage.md`
 
 ---
@@ -101,7 +112,7 @@ Default: `clusterApiUrl('devnet')`. No secondary provider, health check, or fail
 
 React Query polling only. No websocket, heartbeat, or hybrid reconcile.
 
-**Pattern:** `patterns/hybrid-subscriptions.md`  
+**Playbook:** `playbooks/websocket-failure.md`  
 **Module:** `reliability/realtime-failures.md`
 
 ---
@@ -112,7 +123,7 @@ React Query polling only. No websocket, heartbeat, or hybrid reconcile.
 
 Refetch on success only. No optimistic UI rollback, no periodic reconcile loop.
 
-**Pattern:** `patterns/reconciliation-patterns.md`
+**Playbook:** `playbooks/stale-balances.md`
 
 ---
 
@@ -128,12 +139,12 @@ Refetch on success only. No optimistic UI rollback, no periodic reconcile loop.
 
 ## Recommendations (ranked by user impact)
 
-1. Register wallet adapters (Layer 1)
-2. Fix `useTransferSol` error handling (Layer 2) → `patterns/transaction-recovery.md`
-3. Add simulation pre-flight (Layer 2)
-4. Add reconciliation loop (Layer 3) → `patterns/reconciliation-patterns.md`
-5. Hybrid subscriptions for counter account (Layer 4) → `patterns/hybrid-subscriptions.md`
-6. Dual RPC providers (Layer 5) → `patterns/rpc-failover.md`
+1. Register wallet adapters (Layer 1) → `playbooks/wallet-cannot-sign.md`
+2. Fix `useTransferSol` error handling (Layer 2) → `playbooks/tx-stuck.md`
+3. Add simulation pre-flight (Layer 2) → `reliability/transaction-failures.md`
+4. Add reconciliation loop (Layer 3) → `playbooks/stale-balances.md`
+5. Hybrid subscriptions for counter account (Layer 4) → `playbooks/websocket-failure.md`
+6. Dual RPC providers (Layer 5) → `playbooks/rpc-outage.md`
 
 ---
 
@@ -147,6 +158,6 @@ Score all five reliability layers and run the production readiness checklist.
 ```
 
 **Skill modules loaded:**
-`framework/reliability-framework.md` → `commands/reliability-audit.md` → `audits/reliability-score.md` → `audits/production-readiness-checklist.md` → `reliability/wallet-failures.md` → `reliability/transaction-failures.md`
+`reliability-framework.md` → `production-readiness-checklist.md` → `reliability/wallet-failures.md` → `reliability/transaction-failures.md`
 
-**Progressive loading verified:** Framework + audit + 2 layer modules — not all 30+ files.
+**Progressive loading verified:** Framework + checklist + 2 layer modules — not the full skill dump.

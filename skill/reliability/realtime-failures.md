@@ -3,7 +3,7 @@
 **Layer 4 — Realtime Reliability**
 
 Websocket drops, subscription leaks, and silent data staleness.  
-**Pattern:** `patterns/hybrid-subscriptions.md`
+**Playbook:** `playbooks/websocket-failure.md`
 
 ---
 

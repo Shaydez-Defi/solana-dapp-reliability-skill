@@ -10,28 +10,28 @@
 
 ## One-Line Pitch
 
-**Production Reliability Engineering for Solana dApps** — a five-layer framework AI agents use to diagnose failures, score mainnet readiness, and apply prevention patterns.
+This skill teaches AI agents how to **diagnose, prevent, and recover** from the failures that make Solana dApps unreliable in production.
 
 ---
 
 ## Why This Skill Should Be Added to Solana AI Kit
 
-Solana AI Kit ships 18+ skills for **building** — wallets, transactions, testing, security, @solana/kit. Protocol skills cover DeFi integrations. **No skill owns production failure recovery and reliability engineering.**
+Solana AI Kit ships 18+ skills for **building** — wallets, transactions, testing, security, @solana/kit. Protocol skills cover DeFi integrations. **No skill owns production failure diagnosis and recovery.**
 
-This is not "Solana frontend troubleshooting." It is **The Reliability Framework** — a memorable model judges can reference.
+This is not "better frontend patterns." It is **The DApp Reliability Framework** — a five-layer methodology judges can remember.
 
 Every team using the kit will eventually hit:
 - Stale balances after transactions
-- Wallet reconnect loops on mobile
+- Wallet connected but can't sign
 - Websocket data freezing silently
 - RPC 429s during congestion
 - Transaction spinners that never resolve
 
-This skill fills a gap the kit's `solana-dev` and `sendai` skills don't cover: **how things break after you ship**.
+This skill fills a gap the kit's `solana-dev` skill doesn't cover: **how things break after you ship**.
 
 ---
 
-## The Reliability Framework
+## The DApp Reliability Framework
 
 | Layer | What it covers |
 |-------|----------------|
@@ -41,17 +41,21 @@ This skill fills a gap the kit's `solana-dev` and `sendai` skills don't cover: *
 | 4 — Realtime Reliability | Websockets, subscriptions, hybrid fallback |
 | 5 — Infrastructure Reliability | RPC failover, rate limits, health |
 
-**Failures** (`reliability/`) teach diagnosis. **Patterns** (`patterns/`) teach prevention. **Audits** (`audits/reliability-score.md`) teach scoring.
+**Playbooks** (`playbooks/`) are first-class — step-by-step recovery for the five most common production incidents.  
+**Failure modules** (`reliability/`) provide deep diagnosis with Severity / Frequency / User Impact.  
+**Production Readiness Checklist** — 10-item founder-friendly mainnet gate.
+
+---
 
 ## What Makes It Different
 
-| Most Solana skills | This skill |
-|--------------------|------------|
-| How to build | How to survive production |
-| Tutorial content | Scored reliability framework |
-| Single-shot answers | Failures + patterns + readiness checklist |
+| Official Solana dev skill | This skill |
+|---------------------------|------------|
+| How to build dApps | How to survive production |
+| Wallet connect, tx build, React patterns | Diagnose and recover from failures |
+| Tutorial content | Framework + playbooks + checklist |
 
-**Organized around failures, not frameworks.**
+**Organized around failures, not technologies.**
 
 ---
 
@@ -59,11 +63,11 @@ This skill fills a gap the kit's `solana-dev` and `sendai` skills don't cover: *
 
 | AI Kit pattern | This repo |
 |----------------|-----------|
-| `skill/SKILL.md` router | ✅ Progressive loading — never dumps all knowledge |
-| `skill/commands/` | ✅ 4 audit commands |
-| `skill/rules/` | ✅ `reliability-rules.md` |
+| `skill/SKILL.md` router | ✅ Progressive loading — max 2–3 files per turn |
+| `reliability-framework.md` at skill root | ✅ Load first for audits |
+| `production-readiness-checklist.md` | ✅ 10-item mainnet gate |
 | `install.sh` | ✅ Project, global, Cursor, Claude scopes |
-| `validate.sh` | ✅ Structure integrity checks |
+| `validate.sh` | ✅ Structure integrity + scope trim checks |
 | `ext/` submodule install | ✅ See `docs/AI-KIT-INTEGRATION.md` |
 
 ---
@@ -76,7 +80,7 @@ Audited the official Solana Foundation counter template. Found:
 - Empty wallet adapter list (critical)
 - Silent transaction error swallowing (critical)
 - No simulation, no failover RPC, no realtime subscriptions
-- Overall score: **52/100 — not production-ready**
+- Checklist: **2/10 passed** — not production-ready
 
 This is exactly what hackathon teams fork and ship broken.
 
@@ -97,30 +101,18 @@ chmod +x install.sh validate.sh
 ```
 /reliability-audit
 My user's balance didn't update after a swap — help me debug.
-/reliability-audit on my codebase before mainnet launch
-/tx-flow-audit
-/frontend-health-check
-/migrate-to-kit
+Is my dApp ready for mainnet users?
+Transaction spinner stuck for 5 minutes — diagnose and recover.
+Wallet connected but user cannot sign.
 ```
-
----
-
-## Commands
-
-| Command | What it does |
-|---------|--------------|
-| `/reliability-audit` | Full codebase review with 6-category reliability score |
-| `/tx-flow-audit` | End-to-end transaction pipeline inspection |
-| `/frontend-health-check` | Architecture strengths, weaknesses, concerns |
-| `/migrate-to-kit` | web3.js → @solana/kit phased migration guidance |
 
 ---
 
 ## Repository Stats
 
-- **21 knowledge files** across 5 reliability modules, 5 playbooks, migration, anti-patterns
-- **Reliability Score Framework** with 6 weighted categories
-- **10 production anti-patterns** with alternatives
+- **14 knowledge files** — framework, checklist, 5 failure modules, 5 playbooks, migration, anti-patterns
+- **5 battle-tested playbooks** with Symptoms → Causes → Verification → Fixes → Prevention
+- **10-item production readiness checklist**
 - **MIT licensed** — ready for AI Kit `ext/` submodule
 
 ---
@@ -142,7 +134,7 @@ Or register in `skill-registry.json`:
   "name": "Solana dApp Reliability",
   "type": "skill",
   "domain": "solana-frontend",
-  "description": "Production reliability for Solana dApps — diagnose stale balances, wallet failures, RPC outages, websocket drops, and tx confirmation issues.",
+  "description": "Diagnose and recover from production failures in Solana dApps — stale balances, wallet issues, RPC outages, websocket drops, tx failures. Five-layer framework + playbooks + mainnet checklist.",
   "source": "https://github.com/Shaydez-Defi/solana-dapp-reliability-skill",
   "install": {
     "method": "submodule",
@@ -151,7 +143,7 @@ Or register in `skill-registry.json`:
   },
   "license": "MIT",
   "maintainer": "Shaydez-Defi",
-  "tags": ["reliability", "frontend", "wallet", "rpc", "websocket", "production", "audit"]
+  "tags": ["reliability", "production", "wallet", "rpc", "websocket", "audit", "playbooks"]
 }
 ```
 

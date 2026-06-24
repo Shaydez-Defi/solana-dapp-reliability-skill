@@ -16,7 +16,7 @@ git submodule add https://github.com/Shaydez-Defi/solana-dapp-reliability-skill.
 The skill router lives at:
 
 ```
-.claude/skills/ext/solana-dapp-reliability/SKILL.md
+.claude/skills/ext/solana-dapp-reliability/skill/SKILL.md
 ```
 
 Wire it into the kit's skill hub by adding a reference in `.claude/skills/SKILL.md` or the kit's skill registry.
@@ -33,7 +33,7 @@ Add to `.claude/skills/skill-registry.json`:
   "name": "Solana dApp Reliability",
   "type": "skill",
   "domain": "solana-frontend",
-  "description": "Diagnose and prevent production failures in Solana dApps: stale balances, wallet disconnects, RPC outages, websocket drops, tx confirmation issues. Commands: /reliability-audit, /tx-flow-audit, /frontend-health-check, /migrate-to-kit.",
+  "description": "Diagnose and recover from production failures in Solana dApps. Five-layer framework, battle-tested playbooks, 10-item mainnet checklist. Does NOT teach how to build — complements solana-dev.",
   "source": "https://github.com/Shaydez-Defi/solana-dapp-reliability-skill",
   "install": {
     "method": "submodule",
@@ -45,7 +45,7 @@ Add to `.claude/skills/skill-registry.json`:
   "signal": { "reputability": "community" },
   "default_installed": false,
   "safety": "clean — pure markdown, no scripts executed at runtime",
-  "tags": ["reliability", "frontend", "wallet", "rpc", "websocket", "production", "audit", "kit-migration"]
+  "tags": ["reliability", "production", "wallet", "rpc", "websocket", "audit", "playbooks"]
 }
 ```
 
@@ -74,20 +74,25 @@ Add this row to the kit's skill router table:
 
 | User intent | Load |
 |-------------|------|
-| dApp reliability, stale balances, wallet reconnect, RPC outage, tx stuck, production audit | `ext/solana-dapp-reliability/skill/SKILL.md` |
+| dApp reliability, stale balances, wallet can't sign, RPC outage, tx stuck, production audit | `ext/solana-dapp-reliability/skill/SKILL.md` |
 
-The reliability skill's own router then loads only the relevant submodule (wallet, tx, state, realtime, RPC, or playbooks).
+The reliability skill's own router then loads only the relevant file — playbook first for symptoms, framework + checklist for audits.
 
 ---
 
-## Commands mapping
+## Intent → File Mapping
 
-| This skill | AI Kit namespaced equivalent |
-|------------|------------------------------|
-| `/reliability-audit` | `/solana-dapp-reliability:reliability-audit` (if installed as plugin) |
-| `/tx-flow-audit` | Load `commands/tx-flow-audit.md` via skill router |
-| `/frontend-health-check` | Load `commands/frontend-health-check.md` |
-| `/migrate-to-kit` | Load `commands/migrate-to-kit.md` + `skill/migration/kit-migration.md` |
+| User intent | Files loaded |
+|-------------|--------------|
+| Audit / production readiness / architecture review | `reliability-framework.md` → `production-readiness-checklist.md` |
+| Stale balance | `playbooks/stale-balances.md` |
+| Stuck transaction | `playbooks/tx-stuck.md` |
+| Wallet can't sign | `playbooks/wallet-cannot-sign.md` |
+| Websocket silence | `playbooks/websocket-failure.md` |
+| RPC outage / 429 | `playbooks/rpc-outage.md` |
+| Kit migration | `migration/kit-migration.md` |
+
+Progressive loading rule: max 2 files per debug turn, max 3 for audits.
 
 ---
 
@@ -95,10 +100,10 @@ The reliability skill's own router then loads only the relevant submodule (walle
 
 | AI Kit skill | Focus | This skill complements by… |
 |--------------|-------|---------------------------|
-| `ext/solana-dev` | Build programs + frontend | Covering production failure modes post-build |
-| `ext/sendai` | DeFi protocol integrations | Handling stale state after swaps/deposits |
-| `ext/solana-mobile` | Mobile Wallet Adapter setup | Debugging mobile reconnect and deep-link failures |
-| `ext/helius` | RPC infrastructure | Failover patterns when Helius degrades |
+| `ext/solana-dev` | Build programs + frontend | Diagnosing production failures post-build |
+| `ext/sendai` | DeFi protocol integrations | Recovering from stale state after swaps/deposits |
+| `ext/solana-mobile` | Mobile Wallet Adapter setup | Playbook for wallet-can't-sign on mobile |
+| `ext/helius` | RPC infrastructure | Failover when primary RPC degrades |
 
 ---
 

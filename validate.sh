@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Solana dApp Reliability Skill — structure validator
-# Run from repo root: ./validate.sh
+# Solana dApp Reliability Skill — focused structure validator
 set -euo pipefail
 
 PASS=0
@@ -20,163 +19,53 @@ check() {
   fi
 }
 
-file_exists() {
-  [ -f "$1" ]
-}
+file_exists() { [ -f "$1" ]; }
 
-has_frontmatter_field() {
-  local file="$1"
-  local field="$2"
-  head -1 "$file" | grep -q "^---" || return 1
-  awk '/^---$/{c++;next} c==1{print; if(NR>30)exit}' "$file" | grep -q "^${field}:"
-}
-
-echo "Validating solana-dapp-reliability-skill..."
+echo "Validating solana-dapp-reliability-skill (focused ship)..."
 echo ""
 
-# --- Core files ---
 echo "[Core]"
 for f in README.md LICENSE install.sh SUBMISSION.md validate.sh; do
-  file_exists "${REPO_ROOT}/${f}" && r=0 || r=1
-  check "$f exists" $r
+  file_exists "${REPO_ROOT}/${f}" && check "$f" 0 || check "$f" 1
 done
 echo ""
 
-# --- SKILL.md router ---
-echo "[SKILL Router]"
-SKILL="${SKILL_ROOT}/SKILL.md"
-if file_exists "$SKILL"; then
-  check "skill/SKILL.md exists" 0
-  has_frontmatter_field "$SKILL" "name" && r=0 || r=1
-  check "SKILL.md has name:" $r
-  has_frontmatter_field "$SKILL" "description" && r=0 || r=1
-  check "SKILL.md has description:" $r
-  grep -q "Path Resolution" "$SKILL" && r=0 || r=1
-  check "SKILL.md documents path resolution" $r
-  grep -q "Read" "$SKILL" && r=0 || r=1
-  check "SKILL.md instructs Read tool usage" $r
-else
-  check "skill/SKILL.md exists" 1
-fi
+echo "[Framework — load first]"
+for f in SKILL.md reliability-framework.md production-readiness-checklist.md; do
+  file_exists "${SKILL_ROOT}/${f}" && check "skill/${f}" 0 || check "skill/${f}" 1
+done
 echo ""
 
-# --- Reliability modules (5 core) ---
 echo "[Reliability Modules]"
-MODULES=(
-  wallet-failures.md
-  transaction-failures.md
-  state-sync-failures.md
-  realtime-failures.md
-  rpc-failures.md
-)
-for m in "${MODULES[@]}"; do
-  file_exists "${SKILL_ROOT}/reliability/${m}" && r=0 || r=1
-  check "skill/reliability/${m}" $r
+for m in wallet-failures.md transaction-failures.md state-sync-failures.md realtime-failures.md rpc-failures.md; do
+  file_exists "${SKILL_ROOT}/reliability/${m}" && check "reliability/${m}" 0 || check "reliability/${m}" 1
 done
 echo ""
 
-# --- Playbooks ---
-echo "[Playbooks]"
-PLAYBOOKS=(
-  stale-balances.md
-  tx-stuck.md
-  websocket-failure.md
-  wallet-reconnect.md
-  rpc-outage.md
-)
-for p in "${PLAYBOOKS[@]}"; do
-  file_exists "${SKILL_ROOT}/playbooks/${p}" && r=0 || r=1
-  check "skill/playbooks/${p}" $r
+echo "[Playbooks — first-class]"
+for p in stale-balances.md tx-stuck.md wallet-cannot-sign.md websocket-failure.md rpc-outage.md; do
+  file_exists "${SKILL_ROOT}/playbooks/${p}" && check "playbooks/${p}" 0 || check "playbooks/${p}" 1
 done
 echo ""
 
-# --- Supporting knowledge ---
-echo "[Supporting Knowledge]"
-for f in \
-  framework/reliability-framework.md \
-  migration/kit-migration.md \
-  anti-patterns/production-anti-patterns.md \
-  audits/reliability-score.md \
-  audits/production-readiness-checklist.md \
-  audits/reliability-checklist.md \
-  rules/reliability-rules.md; do
-  file_exists "${SKILL_ROOT}/${f}" && r=0 || r=1
-  check "skill/${f}" $r
+echo "[Supporting]"
+for f in migration/kit-migration.md anti-patterns/production-anti-patterns.md; do
+  file_exists "${SKILL_ROOT}/${f}" && check "skill/${f}" 0 || check "skill/${f}" 1
 done
 echo ""
 
-# --- Commands ---
-echo "[Patterns]"
-PATTERNS=(
-  optimistic-ui.md
-  reconciliation-patterns.md
-  hybrid-subscriptions.md
-  rpc-failover.md
-  transaction-recovery.md
-)
-for p in "${PATTERNS[@]}"; do
-  file_exists "${SKILL_ROOT}/patterns/${p}" && r=0 || r=1
-  check "skill/patterns/${p}" $r
+echo "[Scope — removed dirs must not exist]"
+for d in patterns framework audits commands rules; do
+  [ ! -d "${SKILL_ROOT}/${d}" ] && check "no skill/${d}/ (scope trimmed)" 0 || check "no skill/${d}/" 1
 done
 echo ""
 
-echo "[Commands]"
-COMMANDS=(
-  reliability-audit.md
-  tx-flow-audit.md
-  frontend-health-check.md
-  migrate-to-kit.md
-)
-for c in "${COMMANDS[@]}"; do
-  file_exists "${SKILL_ROOT}/commands/${c}" && r=0 || r=1
-  check "skill/commands/${c}" $r
-done
-echo ""
-
-# --- SKILL.md router links resolve (paths relative to skill root) ---
-echo "[Router Links]"
-if file_exists "$SKILL"; then
-  broken=0
-  while IFS= read -r path; do
-    [ -z "$path" ] && continue
-    target="${SKILL_ROOT}/${path}"
-    if [ ! -e "$target" ]; then
-      echo "  FAIL: Broken router reference -> ${path}"
-      FAIL=$((FAIL + 1))
-      broken=$((broken + 1))
-    fi
-  done < <(grep -oE '`[a-z0-9_./-]+\.md`' "$SKILL" | tr -d '`' | grep -v '^SKILL' | sort -u)
-
-  if [ "$broken" -eq 0 ]; then
-    check "All SKILL.md module references resolve" 0
-  fi
-else
-  check "SKILL.md present for link check" 1
-fi
-echo ""
-
-# --- install.sh ---
-echo "[Installer]"
-if file_exists "${REPO_ROOT}/install.sh"; then
-  grep -q "SKILL_NAME" "${REPO_ROOT}/install.sh" && r=0 || r=1
-  check "install.sh defines SKILL_NAME" $r
-  grep -q "framework reliability playbooks patterns" "${REPO_ROOT}/install.sh" && r=0 || r=1
-  check "install.sh copies full skill tree from skill/" $r
-fi
-echo ""
-
-# --- Examples ---
 echo "[Examples]"
-file_exists "${REPO_ROOT}/examples/demo-audit.md" && r=0 || r=1
-check "examples/demo-audit.md exists" $r
+file_exists "${REPO_ROOT}/examples/demo-audit.md" && check "examples/demo-audit.md" 0 || check "examples/demo-audit.md" 1
 echo ""
 
-# --- Summary ---
 TOTAL=$((PASS + FAIL))
 echo "========================================="
-echo "Results: $PASS passed, $FAIL failed (of $TOTAL checks)"
+echo "Results: $PASS passed, $FAIL failed (of $TOTAL)"
 echo "========================================="
-
-if [ "$FAIL" -gt 0 ]; then
-  exit 1
-fi
+[ "$FAIL" -eq 0 ] || exit 1

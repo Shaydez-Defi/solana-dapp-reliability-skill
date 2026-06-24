@@ -3,7 +3,7 @@
 **Layer 5 — Infrastructure Reliability**
 
 Rate limits, provider degradation, and outage survival.  
-**Pattern:** `patterns/rpc-failover.md`
+**Playbook:** `playbooks/rpc-outage.md`
 
 ---
 

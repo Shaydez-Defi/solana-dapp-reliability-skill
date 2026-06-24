@@ -1,77 +1,44 @@
-# Playbook: Websocket Failure
+# Playbook: Realtime Data Stopped
 
-**User report:** "Data stopped updating" / "App feels frozen but no error."
+**Layer 4 — Realtime Reliability**
 
-**Severity:** High  
-**Frequency:** Very Common  
-**User Impact:** High — silent failure; users blame the protocol, not the connection.
+**Severity:** High | **Frequency:** Very Common | **User Impact:** High
 
 ---
 
-## Investigation
+## Symptoms
 
-1. **Check connection liveness**
-   - When was the last websocket message received?
-   - Is `readyState === OPEN`?
-   - Any `onerror` / `onclose` events in logs?
+- Prices/balances frozen; no error shown
+- Refresh fixes instantly
+- Users think the protocol is dead
 
-2. **Check subscription health**
-   - How many active subscriptions? (Should match watched accounts, not grow unbounded.)
-   - Duplicate subscriptions after reconnect?
+## Likely Causes
 
-3. **Compare websocket vs RPC**
-   - Fetch same account via HTTP RPC.
-   - If RPC is fresh but websocket stale → transport issue, not chain issue.
+- Silent websocket disconnect (no heartbeat)
+- Subscriptions not cleaned up; duplicate listeners after reconnect
+- Tab backgrounded; browser throttled timers
+- Provider idle timeout or maintenance
 
-4. **Environmental factors**
-   - Laptop sleep, mobile background, VPN, ad blocker.
-   - Provider websocket limits or maintenance.
+## Verification Steps
 
----
+1. `readyState === OPEN`? Last message timestamp?
+2. Count active subscriptions — should not grow unbounded
+3. RPC-fetch same account — fresh on RPC, stale on UI = transport issue
+4. Reproduce: laptop sleep, mobile background, VPN toggle
 
-## Recovery
+## Fixes
 
-1. **Immediate:** force reconnect websocket; resubscribe all accounts.
-2. **Snapshot:** RPC-fetch all critical accounts before trusting stream again.
-3. **Notify user:** "Reconnecting to live data…" — not silent recovery.
-4. **Fallback:** if reconnect fails 3×, switch to polling mode (15–30s interval).
-5. **Cleanup:** remove duplicate listeners before resubscribing.
-
----
-
-## Monitoring
-
-Track these metrics:
-- `ws_last_message_age_seconds`
-- `ws_reconnect_count_per_session`
-- `ws_subscription_count`
-- `data_staleness_seconds` (UI value vs RPC truth)
-
-Alert when `ws_last_message_age_seconds > 60` during active session.
-
----
-
-## Fallback Strategies
-
-| Priority | Strategy |
-|----------|----------|
-| 1 | Reconnect with exponential backoff + jitter |
-| 2 | Full RPC snapshot on reconnect |
-| 3 | Polling fallback for critical accounts |
-| 4 | Degraded mode banner + manual refresh |
-
----
+1. Force reconnect + resubscribe all accounts
+2. RPC snapshot all critical state before trusting stream
+3. Show "Reconnecting to live data…" — not silent recovery
+4. After 3 failed reconnects → polling fallback (15–30s)
+5. Remove duplicate listeners before resubscribing
 
 ## Prevention
 
-- Heartbeat: no message in 30–60s → proactive reconnect.
-- Central subscription manager with reference counting.
-- Hybrid architecture: websocket + periodic RPC reconciliation.
-- See `reliability/realtime-failures.md`.
+- Heartbeat: no message in 30–60s → proactive reconnect with backoff
+- Central subscription manager with reference counting
+- Periodic RPC reconcile every 15–30s regardless of websocket health
+- Metric: `ws_last_message_age_seconds`; alert if >60s
 
----
-
-## Related Modules
-
-- `reliability/state-sync-failures.md`
-- `reliability/rpc-failures.md`
+**Module:** `reliability/realtime-failures.md`

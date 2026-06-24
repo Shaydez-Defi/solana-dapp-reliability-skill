@@ -1,74 +1,46 @@
 # Playbook: Transaction Stuck
 
-**User report:** "My transaction is frozen" / spinner never stops.
+**Layer 2 — Transaction Reliability**
 
-**Severity:** High  
-**Frequency:** Common  
-**User Impact:** High — user assumes funds lost; often a UI/confirmation bug, not an on-chain failure.
+**Severity:** High | **Frequency:** Common | **User Impact:** High
 
 ---
 
-## Investigation
+## Symptoms
 
-1. **Get the signature** (or determine tx was never sent)
-   - If user signed: check wallet activity / app logs for signature.
-   - If no signature: tx may have failed before `sendRawTransaction` — check wallet errors.
+- Spinner never stops; user thinks funds are lost
+- No explorer link; no timeout message
+- "Pending" forever though tx may have confirmed or failed
 
-2. **Check on-chain status**
-   ```
-   getSignatureStatuses([signature])
-   ```
-   - `null` → not landed yet (dropped, never submitted, or still propagating).
-   - `err` → failed on-chain; UI should show failure, not pending.
-   - `confirmationStatus: confirmed` → success; UI bug.
+## Likely Causes
 
-3. **Check explorer**
-   - Solscan / SolanaFM: landed, failed, or not found?
-   - Not found after 2+ minutes on mainnet → likely dropped.
+- Waiting for `finalized` when `confirmed` is enough
+- Websocket confirmation listener died; no polling fallback
+- No timeout policy
+- Expired blockhash — tx never landed
+- `getSignatureStatuses` never called
 
-4. **Common stuck causes**
-   - Waiting for `finalized` when `confirmed` is enough.
-   - Websocket confirmation listener died; polling never started.
-   - No timeout — pending state forever.
-   - Expired blockhash: sent but never included.
+## Verification Steps
 
----
+1. Get signature from logs/wallet — or confirm tx never sent
+2. `getSignatureStatuses([sig])` — null / err / confirmed?
+3. Check explorer: landed, failed, or not found after 2min?
+4. Map all confirmation call sites — mixed commitment levels?
+5. Check if UI success triggers before `confirmed`
 
-## Recovery Workflow
+## Fixes
 
-### If tx failed on-chain
-1. Update UI to failed with explorer link and error reason.
-2. Roll back any optimistic state.
-3. Offer retry with fresh blockhash.
-
-### If tx confirmed but UI stuck
-1. Force status update from `getSignatureStatuses`.
-2. Fix confirmation listener / polling bug.
-3. Invalidate dependent state (balances, positions).
-
-### If tx not found (dropped)
-1. After 60–90s, show: "Transaction not confirmed. It may have been dropped."
-2. Options: **Check explorer** | **Retry** (new blockhash, new sign if needed).
-3. Do not resubmit same tx if user may have already signed a replacement.
-
-### If network congested
-1. Show honest status: "Network busy — confirmation may take longer."
-2. Link to explorer; keep polling with backoff.
-3. Suggest priority fee on retry if appropriate.
-
----
+| Status | Action |
+|--------|--------|
+| Failed on-chain | Show failure + explorer link; rollback optimistic state |
+| Confirmed | Force status update; fix listener bug; invalidate caches |
+| Not found (90s+) | "May have been dropped" + explorer + retry option |
+| Congested | Honest wait message + backoff poll + priority fee on retry |
 
 ## Prevention
 
-- **Timeout policy:** pending > 90s → "still confirming" UI with explorer link; > 5min → suggest retry.
-- **Commitment standard:** UI success at `confirmed`; reserve `finalized` for high-value settlement only.
-- **Single tx status service** shared by all components.
-- **Always parse** `getSignatureStatuses` errors — never infinite spinner.
-- **Log:** signature, send time, confirmation time, commitment level, provider used.
+- Timeout: 90s → "still confirming" + explorer; 5min → suggest retry
+- UI success at `confirmed`; single tx status service for all components
+- Log: signature, send time, confirm time, provider, commitment
 
----
-
-## Related Modules
-
-- `reliability/transaction-failures.md`
-- `reliability/rpc-failures.md` (if RPC can't return status)
+**Module:** `reliability/transaction-failures.md`

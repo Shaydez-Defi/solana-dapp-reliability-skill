@@ -3,7 +3,7 @@
 **Layer 3 — State Reliability**
 
 Why UI state drifts from on-chain truth — the most common production complaint.  
-**Patterns:** `patterns/optimistic-ui.md`, `patterns/reconciliation-patterns.md`
+**Playbook:** `playbooks/stale-balances.md`
 
 ---
 
